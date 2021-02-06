@@ -20,8 +20,9 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
   final riveFileName = 'assets/images/frigomain.riv';
   void _togglePlay() {
     setState(() {
-      lightShinning = !lightShinning;
-      _shineController.isActive = !_shineController?.isActive ?? false;
+      if (_shineController != null) {
+        _shineController.isActive = isOpen;
+      }
     });
   }
 
@@ -41,38 +42,38 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         ..addController(_fridgeOpen = SimpleAnimation('Open')));
     }
 
-    // _fridgeOpen.isActiveChanged.addListener(() {
-    //   if (!_fridgeOpen.isActive) {
-    //     print("light-shine starting");
-    //     setState(() {
-    //       // lightShinning = true;
-    //       // isOpen = true;
-    //       if (_shineController == null) {
-    //         _artboard = file.mainArtboard
-    //           ..addController(_shineController = ShineAnimation('Shine'));
-    //       }
-    //     });
-    //   }
-    // });
+    _fridgeOpen.isActiveChanged.addListener(() {
+      if (!_fridgeOpen.isActive) {
+        lightShinning = true;
+        isOpen = true;
+        if (_shineController == null) {
+          SchedulerBinding.instance.addPostFrameCallback((d) {
+            setState(() {
+              _artboard = file.mainArtboard
+                ..addController(_shineController = ShineAnimation('Shine'));
+            });
+          });
+        }
+      }
+    });
   }
 
   void toggleOpen() {
-    _togglePlay();
-    print("Wtf");
-    if (lightShinning) {
-      _shineController.stop();
-    } else {
-      _shineController.start();
-    }
+    print(lightShinning);
+    // if (lightShinning) {
+    // } else {
+    // }
     if (isOpen) {
       _artboard..addController(_fridgeClose = SimpleAnimation('Close'));
+      _shineController.stop();
     } else {
       _artboard..addController(_fridgeOpen = SimpleAnimation('Open'));
+      _shineController.start();
     }
-    // setState(() {
-    //   isOpen = !isOpen;
-    // });
-    setState(() => isOpen = !isOpen);
+    setState(() {
+      isOpen = !isOpen;
+      _togglePlay();
+    });
     // SchedulerBinding.addPostFrameCallback(P)
   }
 
@@ -88,21 +89,35 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff00DCA7),
-      body: Center(
-          child: _artboard == null
-              ? const SizedBox()
-              : GestureDetector(
-                  onTap: toggleOpen,
-                  child: Rive(artboard: _artboard),
-                )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _togglePlay,
-        tooltip: isPlaying ? 'Pause' : 'Play',
-        child: Icon(
-          isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
-      ),
-    );
+        backgroundColor: Color(0xff00DCA7),
+        body: Stack(children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text.rich(
+                TextSpan(
+                  text: 'Hello', // default text style
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: ' beautiful ',
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                    TextSpan(
+                        text: 'world',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              )),
+          Transform.scale(
+            alignment: Alignment.centerLeft,
+            scale: 0.9,
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: _artboard == null
+                    ? const SizedBox()
+                    : GestureDetector(
+                        onDoubleTap: toggleOpen,
+                        child: Rive(artboard: _artboard),
+                      )),
+          )
+        ]));
   }
 }
