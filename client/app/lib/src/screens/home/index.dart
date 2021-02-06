@@ -29,6 +29,8 @@ class HomeScreen extends StatelessWidget {
                       minWidth: 200.0,
                       height: 50.0,
                       child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20.0)),
                         color: Color(0xff00BFA6),
                         onPressed: () =>
                             Navigator.pushNamed(context, '/fridge'),

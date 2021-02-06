@@ -64,7 +64,7 @@ a tip on what to do with the banana.
 Return: (lifetime: String, tip: String | None)
 ******************************************************************************
 """
-def get_food_infomation(food_name):
+def get_food_infomation(food_name, ripeness):
     if food_name not in food_information:
         return (None, None)
     
@@ -72,9 +72,9 @@ def get_food_infomation(food_name):
         lifetime = food_information[food_name]['lifetime']
         tip = None
     else: 
-        # TODO use CNN to determine banana ripeness
-        ripeness = 'green'
-        
+        if (ripeness is None):
+            ripeness = 'green'
+            
         info = food_information[food_name][ripeness]
         lifetime = info['lifetime']
         tip = info['tip']

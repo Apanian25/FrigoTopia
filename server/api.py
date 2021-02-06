@@ -5,7 +5,10 @@ from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
-
+from RipenessDetection import RipenessDetection
+import requests
+import numpy as np
+import cv2 as cv
 
 app = Flask(__name__)
 api = Api(app)
@@ -69,10 +72,9 @@ class Item(Resource):
 ******************************************************************************
 Endpoint: /api/v1/receipt
 
-Description: Endpoint that will retrieve all of the contents of the fridge in 
-a paginated form. 
+Description: 
 
-Return: [{name: String, qty: Int, daysLeft: Int}]
+Return: 
 ******************************************************************************
 """
 class Receipt(Resource):
@@ -145,17 +147,21 @@ Return: [{name: String, qty: Int, expiryDate: "YYYY-MM-DD", confidence: Int}]
 food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
               'hot dog', 'pizza', 'donut', 'cake']
 image_detector = YoloDetection()
+ripeness_detector = RipenessDetection()
 
-
-# Temp import
-import cv2 as cv
-
-@app.route('/api/v1/image_upload', methods=['GET'])
+@app.route('/api/v1/image_upload', methods=['POST'])
 def items_from_image():
-    if 'imgType' not in request.args:
-        return "Error"
+    try:
+        imagefile = request.files['image']
+    except Exception as err:
+        return str(err)
         
-    img = cv.imread("./YOLO/Fruits.jpg")
+    # convert string of image data to uint8
+    nparr = np.fromstring(imagefile.read(), np.uint8)
+    # decode image
+    img = cv.imdecode(nparr, cv.IMREAD_COLOR)
+    
+    # img = cv.imread(imagefile)
     foods = image_detector.getObjects(img)
     
     parsed_food = {}
@@ -163,7 +169,6 @@ def items_from_image():
     for food in foods:
         label = food['label']
         confidence = food['confidence']
-        # x, y, w, h = food['rectangle']
         
         if (label not in food_items):
             continue
@@ -175,7 +180,12 @@ def items_from_image():
             parsed_food[label]['confidence'] = ((total_confidence * qty) + confidence)/(qty + 1)
             parsed_food[label]['qty'] += 1
         else:
-            lifetime, tip = get_food_infomation(label)
+            if label == 'banana':
+                ripeness = ripeness_detector.get_ripeness(img)
+            else: 
+                ripeness = None
+                
+            lifetime, tip = get_food_infomation(label, ripeness)
             
             parsed_food[label] = {
                                     'name': label,
@@ -184,10 +194,54 @@ def items_from_image():
                                     'expiryDate': lifetime,
                                     'tip': tip
                                  }
+            
     
     return jsonify(list(parsed_food.values()))
 
 
+
+"""
+******************************************************************************
+Endpoint: /api/v1/recipe
+
+Description: Endpoint that will retrieve recipes for a given food item
+
+Return: 
+******************************************************************************
+"""
+url = "https://edamam-recipe-search.p.rapidapi.com/search"
+
+headers = {
+    'x-rapidapi-key': "12a97c0bbbmshaf65c2b7355968bp1b19e7jsn55344496d90e",
+    'x-rapidapi-host': "edamam-recipe-search.p.rapidapi.com"
+    }
+
+
+@app.route('/api/v1/recipe', methods=['GET'])
+def recipes_for_item():
+    # Check if the userId was provided
+    if 'item' not in request.args and 'page' not in request.args:
+        return "Error"
+    
+    response = requests.request("GET", url, headers=headers, params={"q": request.args['item']})
+    recipes = response.json()['hits']
+    
+    formatted_recipes = []
+    
+    for recipe in recipes:
+        recipe = recipe['recipe']
+        
+        formatted_recipes.append({
+                'url': recipe['url'],
+                'label': recipe['label'],
+                'img': recipe['image'],
+                'src': recipe['source'],
+                
+            })
+    
+    
+    return jsonify(formatted_recipes)
+    
 
 api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")
