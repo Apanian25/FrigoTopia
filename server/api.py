@@ -3,8 +3,6 @@ from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from db.firebase import getFridge, addItem, removeItem
 from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
-from datetime import date
-import datetime
 
 app = Flask(__name__)
 api = Api(app)
