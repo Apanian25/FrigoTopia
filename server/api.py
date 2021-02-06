@@ -4,6 +4,7 @@ from db.firebase import getFridge, addItem, removeItem
 from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -30,6 +31,7 @@ resource_fields = {
     "price": fields.Integer
 }
 
+
 class Item(Resource):
     def get(self, user_id):
         result = getFridge(user_id)
@@ -51,6 +53,15 @@ class Item(Resource):
         args = fridge_delete_args.parse_args()
         removeItem(user_id, args['name'])
         return {'message':'delete successfully'}, 204 #deleted successfully
+
+
+class Receipt(Resource):
+    def post(self):
+        receipt = request.files['image']
+        if receipt:
+            print('image received')
+        else:
+            print('image not received')
 
 
 
@@ -117,6 +128,7 @@ def items_from_image():
 
 
 api.add_resource(Item, "/items/<string:user_id>")
+api.add_resource(Receipt, "/receipt")
 
 if __name__ == "__main__":
     app.run(debug=True)
