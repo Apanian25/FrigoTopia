@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from db.firebase import getFridge, addItem, removeItem
 from YoloDetection import YoloDetection
+from FoodInformation import get_food_infomation
+from datetime import date
+import datetime
 
 app = Flask(__name__)
 api = Api(app)
@@ -78,7 +81,7 @@ def items_from_image():
     if 'imgType' not in request.args:
         return "Error"
         
-    img = cv.imread("./YOLO/pizza.jpg")
+    img = cv.imread("./YOLO/Fruits.jpg")
     foods = image_detector.getObjects(img)
     
     parsed_food = {}
@@ -98,11 +101,14 @@ def items_from_image():
             parsed_food[label]['confidence'] = ((total_confidence * qty) + confidence)/(qty + 1)
             parsed_food[label]['qty'] += 1
         else:
+            lifetime, tip = get_food_infomation(label)
+            
             parsed_food[label] = {
                                     'name': label,
                                     'qty': 1,
                                     'confidence': confidence,
-                                    'expiryDate': 'TODO',
+                                    'expiryDate': lifetime,
+                                    'tip': tip
                                  }
     
     return jsonify(list(parsed_food.values()))
