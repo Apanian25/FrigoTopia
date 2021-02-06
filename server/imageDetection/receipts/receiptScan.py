@@ -27,7 +27,6 @@ def getItems(image_url):
 
 
 def getItemsFromTxt(image_uri):
-    # text = getTextFromImage(image_uri)
     items = []
     with open(image_uri) as fp:
         line = fp.readline()

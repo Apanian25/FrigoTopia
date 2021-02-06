@@ -15,10 +15,10 @@ class YoloDetection():
     
     def __init__(self):
         # Load YOLO 
-        self.net = cv.dnn.readNet('yolov3.weights', 'yolov3.cfg')
+        self.net = cv.dnn.readNet('./YOLO/yolov3.weights', './YOLO/yolov3.cfg')
         
         # Load the classifications from the coco file
-        with open("coco.names", "r") as f:
+        with open("./YOLO/coco.names", "r") as f:
             self.classes = [line.strip() for line in f.readlines()]
         
         # Define the input and output layers
@@ -100,7 +100,7 @@ class YoloDetection():
     
     
     
-# """TEST"""
+# # """TEST"""
 # # Use OpenCV to grab the webcam video feed
 # video_feed = cv.VideoCapture(0)
 
@@ -109,12 +109,11 @@ class YoloDetection():
 
 # # Grab images from file
 # #files = ["Fruits2.jpg", "pizza.jpg", "Fruits.jpg", "Pizzaaaa.jpg", "p3.jpg", "p4.jpg"]
-# files=["Pizzaaaa.jpg"]
 
-# for i,file in enumerate(files):
-#     img = cv.imread(file)
+# for num in range(1,6):
+#     img = cv.imread(f"./YOLO/P{num}.jpg")
 #     print(yd.getObjects(img))
     
-#     # cv.imshow(f"Image {i}", img)
+#     cv.imshow(f"Image {num}", img)
 
 # cv.waitKey(0)
