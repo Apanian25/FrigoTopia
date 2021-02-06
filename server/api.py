@@ -81,9 +81,10 @@ class Receipt(Resource):
         if receipt:
             print('image received')
             items = getItems(receipt)
-            for item in items:
-                print(item)
-            return items
+            json = []
+            for item, count in items.items():
+                json.append({'name': item, 'qty': count})
+            return json
         else:
             print('image not received')
             abort(406, message="No picture detected...")
