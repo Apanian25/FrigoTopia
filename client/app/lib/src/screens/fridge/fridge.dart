@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
+import 'package:flutter/rendering.dart';
+
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'shine_animation.dart';
 
@@ -15,6 +18,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
   /// Tracks if the animation is playing by whether controller is running.
   bool isOpen = false;
   bool lightShinning = false;
+  ScrollController scrollController;
+  bool dialVisible = true;
   bool get isPlaying =>
       _fridgeOpen?.isActive ?? _fridgeClose?.isActive ?? false;
   final riveFileName = 'assets/images/frigomain.riv';
@@ -81,14 +86,61 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
     super.initState();
     _loadRiveFile();
 
-    // Load the animation file from the bundle, note that you could also
-    // download this. The RiveFile just expects a list of bytes.
+    scrollController = ScrollController()
+      ..addListener(() {
+        setDialVisible(scrollController.position.userScrollDirection ==
+            ScrollDirection.forward);
+      });
+  }
+
+  void setDialVisible(bool value) {
+    setState(() {
+      dialVisible = value;
+    });
+  }
+
+  SpeedDial buildSpeedDial() {
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme: IconThemeData(size: 22.0),
+      // child: Icon(Icons.add),
+      onOpen: () => print('OPENING DIAL'),
+      onClose: () => print('DIAL CLOSED'),
+      visible: dialVisible,
+      curve: Curves.bounceIn,
+      children: [
+        SpeedDialChild(
+          child: Icon(Icons.receipt, color: Colors.white),
+          backgroundColor: Color(0xff00BFA6),
+          onTap: () => Navigator.pushNamed(context, '/'),
+          label: 'Take recipt picture',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.green[50],
+        ),
+        SpeedDialChild(
+          child: Icon(Icons.create, color: Colors.white),
+          backgroundColor: Color(0xff00BFA6),
+          onTap: () => print('SECOND CHILD'),
+          label: 'Enter manually',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.green[50],
+        ),
+        SpeedDialChild(
+          child: Icon(Icons.camera, color: Colors.white),
+          backgroundColor: Color(0xff00BFA6),
+          onTap: () => print('FIRST CHILD'),
+          label: 'Take fridge picture',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.green[50],
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff00DCA7),
+      appBar: AppBar(title: Text('Frigo')),
       body: Center(
           child: _artboard == null
               ? const SizedBox()
@@ -96,13 +148,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                   onTap: toggleOpen,
                   child: Rive(artboard: _artboard),
                 )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _togglePlay,
-        tooltip: isPlaying ? 'Pause' : 'Play',
-        child: Icon(
-          isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
-      ),
+      floatingActionButton: buildSpeedDial(),
     );
   }
 }
