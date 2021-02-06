@@ -18,9 +18,11 @@ def getItems(image):
     lines = getTextFromImage(image)
     items = []
     for line in lines:
+        if line[0].isdigit():
+            line = line.split(' ', 1)[-1]
         item = getBaseItem(line.strip())
         if item:
-            items.append(item)
+            items.append({'name': item, 'qty': 1})
     return items
 
 

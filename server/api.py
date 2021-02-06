@@ -83,8 +83,10 @@ class Receipt(Resource):
             items = getItems(receipt)
             for item in items:
                 print(item)
+            return items
         else:
             print('image not received')
+            abort(406, message="No picture detected...")
 
 
 
