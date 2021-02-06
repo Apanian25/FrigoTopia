@@ -9,13 +9,21 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
+LIMIT = 1
+
 
 def get_fridge_contents(fridgeId, page):
-    fridge_ref = db.collection(f"fridge/{fridgeId}/items").get()    
+    # Offset is not good for scaling and pricing (counts as query)
+    # Ok for hackathon, change after
+    fridge_ref = (db.collection(f"fridge/{fridgeId}/items")
+                    .offset(LIMIT * int(page))
+                    .limit(LIMIT)
+                    .get())
     
     fridge_items = []
     for item in fridge_ref:
-        fridge_items.append(item.to_dict())        
+        fridge_items.append(item.to_dict())  
+
 
     return fridge_items
 
