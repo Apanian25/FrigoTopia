@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from db.firebase import getFridge, addItem, removeItem
+from YoloDetection import YoloDetection
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,7 +24,6 @@ resource_fields = {
     "name": fields.String,
     "expiryDate": fields.String,
     "qty": fields.String,
-    "weight": fields.Integer,
     "weight": fields.Integer,
     "volume": fields.Integer,
     "price": fields.Integer
@@ -50,6 +50,63 @@ class Item(Resource):
         args = fridge_delete_args.parse_args()
         removeItem(user_id, args['name'])
         return {'message':'delete successfully'}, 204 #deleted successfully
+
+
+"""
+******************************************************************************
+Endpoint: /api/v1/image_upload
+
+Description: Endpoint accepts as a parameter an image and it will then detect 
+all the food items present within the image. The function will return a list
+of all the items with the quantity, expected expiry date and confidence level
+
+Return: [{name: String, qty: Int, expiryDate: "YYYY-MM-DD", confidence: Int}]
+******************************************************************************
+"""
+# Constant
+food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
+              'hot dog', 'pizza', 'donut', 'cake']
+image_detector = YoloDetection()
+
+
+# Temp import
+import cv2 as cv
+
+@app.route('/api/v1/image_upload', methods=['GET'])
+def items_from_image():
+    if 'imgType' not in request.args:
+        return "Error"
+        
+    img = cv.imread("./YOLO/pizza.jpg")
+    foods = image_detector.getObjects(img)
+    
+    parsed_food = {}
+    
+    for food in foods:
+        label = food['label']
+        confidence = food['confidence']
+        # x, y, w, h = food['rectangle']
+        
+        if (label not in food_items):
+            continue
+        
+        if (label in parsed_food):
+            total_confidence = parsed_food[label]['confidence']
+            qty = parsed_food[label]['qty']
+            
+            parsed_food[label]['confidence'] = ((total_confidence * qty) + confidence)/(qty + 1)
+            parsed_food[label]['qty'] += 1
+        else:
+            parsed_food[label] = {
+                                    'name': label,
+                                    'qty': 1,
+                                    'confidence': confidence,
+                                    'expiryDate': 'TODO',
+                                 }
+    
+    return jsonify(list(parsed_food.values()))
+
+
 
 
 

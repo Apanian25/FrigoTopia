@@ -15,10 +15,10 @@ class YoloDetection():
     
     def __init__(self):
         # Load YOLO 
-        self.net = cv.dnn.readNet('yolov3.weights', 'yolov3.cfg')
+        self.net = cv.dnn.readNet('./YOLO/yolov3.weights', './YOLO/yolov3.cfg')
         
         # Load the classifications from the coco file
-        with open("coco.names", "r") as f:
+        with open("./YOLO/coco.names", "r") as f:
             self.classes = [line.strip() for line in f.readlines()]
         
         # Define the input and output layers
