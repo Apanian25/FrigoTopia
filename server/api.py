@@ -6,6 +6,7 @@ from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
 from RipenessDetection import RipenessDetection
+import numpy as np
 
 
 app = Flask(__name__)
@@ -151,12 +152,20 @@ ripeness_detector = RipenessDetection()
 # Temp import
 import cv2 as cv
 
-@app.route('/api/v1/image_upload', methods=['GET'])
+@app.route('/api/v1/image_upload', methods=['POST'])
 def items_from_image():
-    if 'imgType' not in request.args:
-        return "Error"
+
+    try:
+        imagefile = request.files['image']
+    except Exception as err:
+        return str(err)
         
-    img = cv.imread("./YOLO/green.jpg")
+    # convert string of image data to uint8
+    nparr = np.fromstring(imagefile.read(), np.uint8)
+    # decode image
+    img = cv.imdecode(nparr, cv.IMREAD_COLOR)
+    
+    # img = cv.imread(imagefile)
     foods = image_detector.getObjects(img)
     
     parsed_food = {}
