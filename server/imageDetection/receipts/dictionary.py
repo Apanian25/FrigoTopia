@@ -1,0 +1,37 @@
+dict = {
+    'zuchinni green': 'zuchinni',
+    'zuchinni': 'zuchinni',
+    'banana cavendish': 'banana',
+    'banana': 'banana',
+    'potatos brushed': 'potatos',
+    'potatos': 'potatos',
+    'broccoli': 'broccoli',
+    'brussel sprouts': 'brussel sprouts',
+    'grapes green': 'grapes',
+    'grapes': 'grapes',
+    'tomatoes grape': 'tomatoe',
+    'tomatoes': 'tomatoe',
+    'tomatoe': 'tomatoe',
+    'peas snow': 'pea',
+    'snow peas': 'pea',
+    'peas': 'pea',
+    'lettuce iceberg': 'lettuce',
+    'iceberg lettuce': 'lettuce',
+    'lettuce romaine': 'lettuce',
+    'romaine lettuce': 'lettuce',
+    'lettuce': 'lettuce',
+    'caesar dressing': 'caesar dressing',
+    'celery hearts': 'celery',
+    'celery': 'celery',
+    'pep orange swt': 'pepper',
+    'pepper ylw swt': 'pepper',
+    'pep jalepano hot': 'jalepano',
+    'avocado small': 'avocado',
+    'enlgish cucumber': 'cucumber',
+    'cucumber': 'cucumber',
+    'kale': 'kale',
+    'bean sprouts': 'bean sprouts'
+}
+
+def getBaseItem(itemName):
+    return dict.get(itemName.lower(), False)

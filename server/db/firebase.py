@@ -9,40 +9,49 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
+LIMIT = 1
 
-def getFridge(user):
+
+def get_fridge_contents(fridgeId, page):
+    # Offset is not good for scaling and pricing (counts as query)
+    # Ok for hackathon, change after
+    fridge_ref = (db.collection(f"fridge/{fridgeId}/items")
+                    .offset(LIMIT * int(page))
+                    .limit(LIMIT)
+                    .get())
     
-    fridge = getFridgeRefFromUser(user)
-    doc = fridge.get()
+    fridge_items = []
+    for item in fridge_ref:
+        fridge_items.append(item.to_dict())  
 
-    items = doc.to_dict().get('items')
 
-    itemData = []
-    for item in items:
-        itemData.append(db.collection('item').document(item.id).get().to_dict())
+    return fridge_items
 
-    return itemData
 
 def addFridge(user):
     print('Not impplemented yet...')
 
-def addItem(user, item):
-    # add to item collection
-    db.collection('item').document(user + item['name']).set(item)
+def addItem(fridge_id, item):
+    fridge = db.collection('fridge').document(fridge_id)
+    if not fridge.get().to_dict():
+        return
 
-    # add item to the array in the fridge
-    fridge = getFridgeRefFromUser(user)
-    fridge.update({'items': firestore.ArrayUnion([db.collection('item').document(user + item['name'])])})
+    # generate the id
+    doc_ref = fridge.collection('items').document()
+    # populate the document
+    doc_ref.set(item)    
 
-    return item
+    # set the itemId on the item
+    doc = doc_ref.get().to_dict()
+    doc['itemId'] = doc_ref.id
+    return doc
 
-def removeItem(user, name):
-    #remove item from fridge array
-    fridge = getFridgeRefFromUser(user)
-    fridge.update({'items': firestore.ArrayRemove([db.collection('item').document(user + name)])})
+def removeItem(fridge_id, item_id):
+    fridge = db.collection('fridge').document(fridge_id)
+    if not fridge.get().to_dict():
+        return
 
-    # remove item from item collection
-    db.collection('item').document(user).delete()
+    fridge.collection('items').document(item_id).delete()
 
 
 
@@ -60,7 +69,7 @@ def getFridgeRefFromUser(user):
     return db.collection('fridge').document(fridgeId)
 
     
-itemData = getFridge('3CQHGX0OkWafpgrkxsO2OfjjDj52')
+#itemData = getFridge('3CQHGX0OkWafpgrkxsO2OfjjDj52')
 # for item in itemData:
 #         print (item)
 
