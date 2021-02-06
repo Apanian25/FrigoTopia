@@ -1,7 +1,8 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
+import os
 
-cred = credentials.Certificate('L:/usefull/Firebase/frigotopia-edaa2-firebase-adminsdk-dr112-86df1b9e09.json')
+cred = credentials.Certificate(os.getenv('FridgoTopia'))
 firebase_admin.initialize_app(cred, {
   'projectId': 'frigotopia-edaa2',
 })
