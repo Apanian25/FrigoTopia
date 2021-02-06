@@ -6,8 +6,9 @@ from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
 from RipenessDetection import RipenessDetection
+import requests
 import numpy as np
-
+import cv2 as cv
 
 app = Flask(__name__)
 api = Api(app)
@@ -148,13 +149,8 @@ food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot',
 image_detector = YoloDetection()
 ripeness_detector = RipenessDetection()
 
-
-# Temp import
-import cv2 as cv
-
 @app.route('/api/v1/image_upload', methods=['POST'])
 def items_from_image():
-
     try:
         imagefile = request.files['image']
     except Exception as err:
@@ -201,6 +197,51 @@ def items_from_image():
             
     
     return jsonify(list(parsed_food.values()))
+
+
+
+"""
+******************************************************************************
+Endpoint: /api/v1/recipe
+
+Description: Endpoint that will retrieve recipes for a given food item
+
+Return: 
+******************************************************************************
+"""
+url = "https://edamam-recipe-search.p.rapidapi.com/search"
+
+headers = {
+    'x-rapidapi-key': "12a97c0bbbmshaf65c2b7355968bp1b19e7jsn55344496d90e",
+    'x-rapidapi-host': "edamam-recipe-search.p.rapidapi.com"
+    }
+
+
+@app.route('/api/v1/recipe', methods=['GET'])
+def recipes_for_item():
+    # Check if the userId was provided
+    if 'item' not in request.args and 'page' not in request.args:
+        return "Error"
+    
+    response = requests.request("GET", url, headers=headers, params={"q": request.args['item']})
+    recipes = response.json()['hits']
+    
+    formatted_recipes = []
+    
+    for recipe in recipes:
+        recipe = recipe['recipe']
+        
+        formatted_recipes.append({
+                'url': recipe['url'],
+                'label': recipe['label'],
+                'img': recipe['image'],
+                'src': recipe['source'],
+                
+            })
+    
+    
+    return jsonify(formatted_recipes)
+    
 
 api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")
