@@ -14,7 +14,6 @@ def getFridge(user):
     fridge = getFridgeRefFromUser(user)
     doc = fridge.get()
 
-    # print(f'{doc.id} => {doc.to_dict()}')
     items = doc.to_dict().get('items')
 
     itemData = []
