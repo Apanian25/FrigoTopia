@@ -20,5 +20,5 @@ print(response.json())
 # response = requests.put(BASE + "items/3CQHGX0OkWafpgrkxsO2OfjjDj52", data[0])
 # print(response.json())
 
-response = requests.delete(BASE + "items/3CQHGX0OkWafpgrkxsO2OfjjDj52", data={'name': 'Chicken'})
-print(response)
+# response = requests.delete(BASE + "items/3CQHGX0OkWafpgrkxsO2OfjjDj52", data={'name': 'Chicken'})
+# print(response)
