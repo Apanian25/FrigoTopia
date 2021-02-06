@@ -5,6 +5,7 @@ from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
+from RipenessDetection import RipenessDetection
 
 
 app = Flask(__name__)
@@ -69,10 +70,9 @@ class Item(Resource):
 ******************************************************************************
 Endpoint: /api/v1/receipt
 
-Description: Endpoint that will retrieve all of the contents of the fridge in 
-a paginated form. 
+Description: 
 
-Return: [{name: String, qty: Int, daysLeft: Int}]
+Return: 
 ******************************************************************************
 """
 class Receipt(Resource):
@@ -144,6 +144,7 @@ Return: [{name: String, qty: Int, expiryDate: "YYYY-MM-DD", confidence: Int}]
 food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
               'hot dog', 'pizza', 'donut', 'cake']
 image_detector = YoloDetection()
+ripeness_detector = RipenessDetection()
 
 
 # Temp import
@@ -154,7 +155,7 @@ def items_from_image():
     if 'imgType' not in request.args:
         return "Error"
         
-    img = cv.imread("./YOLO/Fruits.jpg")
+    img = cv.imread("./YOLO/green.jpg")
     foods = image_detector.getObjects(img)
     
     parsed_food = {}
@@ -162,7 +163,6 @@ def items_from_image():
     for food in foods:
         label = food['label']
         confidence = food['confidence']
-        # x, y, w, h = food['rectangle']
         
         if (label not in food_items):
             continue
@@ -174,7 +174,12 @@ def items_from_image():
             parsed_food[label]['confidence'] = ((total_confidence * qty) + confidence)/(qty + 1)
             parsed_food[label]['qty'] += 1
         else:
-            lifetime, tip = get_food_infomation(label)
+            if label == 'banana':
+                ripeness = ripeness_detector.get_ripeness(img)
+            else: 
+                ripeness = None
+                
+            lifetime, tip = get_food_infomation(label, ripeness)
             
             parsed_food[label] = {
                                     'name': label,
@@ -183,10 +188,9 @@ def items_from_image():
                                     'expiryDate': lifetime,
                                     'tip': tip
                                  }
+            
     
     return jsonify(list(parsed_food.values()))
-
-
 
 api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")

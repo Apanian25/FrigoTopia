@@ -71,6 +71,7 @@ class YoloDetection():
             
             # cv.rectangle(img, (x,y), (x + w, y + h), (0,255,0), 2)
             # cv.putText(img, f"{label}-{confidence}", (x, y + 30), FONT, 2, (0,255,0), 2)
+            # cv.imshow('ttt', img)
             
         return valid
         
