@@ -1,4 +1,5 @@
 from google.cloud import vision
+from collections import Counter
 from imageDetection.receipts.dictionary import getBaseItem
 
 # Instantiates a client
@@ -22,8 +23,8 @@ def getItems(image):
             line = line.split(' ', 1)[-1]
         item = getBaseItem(line.strip())
         if item:
-            items.append({'name': item, 'qty': 1})
-    return items
+            items.append(item)
+    return Counter(items)
 
 
 def getItemsFromTxt(image_uri):
