@@ -71,28 +71,27 @@ Return: [{name: String, qty: Int, daysLeft: Int}]
 @app.route('/api/v1/items', methods=['GET'])
 def items():
     # Check if the userId was provided
-    if 'fridgeId' not in request.args:
+    if 'fridgeId' not in request.args and 'page' not in request.args:
         return "Error"
     
     fridge_id = request.args['fridgeId']
-    results = get_fridge_contents(fridge_id, 0)
+    page = request.args['page']
+    results = get_fridge_contents(fridge_id, page)
     
-    # formatted_results = []
+    formatted_results = []
     
-    # for result in results:
-    #     expiry_date = datetime.strptime(result['expiryDate'], '%Y-%m-%d').date()
-    #     today = date.today()
+    for result in results:
+        expiry_date = datetime.strptime(result['expiryDate'], '%Y-%m-%d').date()
+        today = date.today()
         
-    #     formatted_results.append({
-    #             'daysLeft': (expiry_date - today).days,
-    #             'name': result['name'],
-    #             'qty': result['qty']
-    #         })
+        formatted_results.append({
+                'daysLeft': (expiry_date - today).days,
+                'name': result['name'],
+                'qty': result['qty']
+            })
     
-    # return jsonify(formatted_results)
+    return jsonify(formatted_results)
     
-    return jsonify(results)
-
 
 
 """
