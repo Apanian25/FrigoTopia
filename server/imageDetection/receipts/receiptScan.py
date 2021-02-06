@@ -1,14 +1,12 @@
 from google.cloud import vision
-import io
-from dictionary import getBaseItem
+from imageDetection.receipts.dictionary import getBaseItem
 
 # Instantiates a client
 client = vision.ImageAnnotatorClient()
 
-def getTextFromImage(image_uri_local):
+def getTextFromImage(image_file):
     # Loads the image into memory
-    with io.open(image_uri_local, 'rb') as image_file:
-        content = image_file.read()
+    content = image_file.read()
 
     image = vision.Image(content=content)
     response = client.text_detection(image=image)
@@ -16,8 +14,8 @@ def getTextFromImage(image_uri_local):
     return res
     
 
-def getItems(image_url):
-    lines = getTextFromImage(image_url)
+def getItems(image):
+    lines = getTextFromImage(image)
     items = []
     for line in lines:
         item = getBaseItem(line.strip())
@@ -44,8 +42,8 @@ def getItemsFromTxt(image_uri):
 # print('----------------------------')
 # getItems('./receipts/txt/good2.txt')
 # getTextFromImage('./receipts/img/good2.png')
-items = getItems('./receipts/img/good2.png')
-for item in items:
-    print(item)
+# items = getItems('./receipts/img/good2.png')
+# for item in items:
+#     print(item)
 
 

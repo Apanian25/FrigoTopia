@@ -4,6 +4,7 @@ from db.firebase import get_fridge_contents, addItem, removeItem
 from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 from datetime import date, datetime
+from imageDetection.receipts.receiptScan import getItems
 
 
 app = Flask(__name__)
@@ -79,6 +80,9 @@ class Receipt(Resource):
         receipt = request.files['image']
         if receipt:
             print('image received')
+            items = getItems(receipt)
+            for item in items:
+                print(item)
         else:
             print('image not received')
 
@@ -179,9 +183,6 @@ def items_from_image():
                                  }
     
     return jsonify(list(parsed_food.values()))
-
-
-
 
 
 
