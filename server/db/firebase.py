@@ -10,18 +10,15 @@ firebase_admin.initialize_app(cred, {
 db = firestore.client()
 
 
-def getFridge(user):
+def get_fridge_contents(fridgeId, page):
+    fridge_ref = db.collection(f"fridge/{fridgeId}/items").get()    
     
-    fridge = getFridgeRefFromUser(user)
-    doc = fridge.get()
+    fridge_items = []
+    for item in fridge_ref:
+        fridge_items.append(item.to_dict())        
 
-    items = doc.to_dict().get('items')
+    return fridge_items
 
-    itemData = []
-    for item in items:
-        itemData.append(db.collection('item').document(item.id).get().to_dict())
-
-    return itemData
 
 def addFridge(user):
     print('Not impplemented yet...')
@@ -60,7 +57,7 @@ def getFridgeRefFromUser(user):
     return db.collection('fridge').document(fridgeId)
 
     
-itemData = getFridge('3CQHGX0OkWafpgrkxsO2OfjjDj52')
+#itemData = getFridge('3CQHGX0OkWafpgrkxsO2OfjjDj52')
 # for item in itemData:
 #         print (item)
 
