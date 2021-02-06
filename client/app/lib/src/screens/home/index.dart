@@ -1,6 +1,7 @@
 // home screen contents
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:app/src/screens/home/welcomeText/welcomeText.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -21,24 +22,7 @@ class HomeScreen extends StatelessWidget {
                         fit: BoxFit.contain),
                     constraints: BoxConstraints.expand(height: 200.0),
                   ),
-                  Text(
-                    'Frigotopia',
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 30,
-                          letterSpacing: .5),
-                    ),
-                  ),
-                  Text(
-                    'Keep your fridge in a good state',
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 16,
-                          letterSpacing: .5),
-                    ),
-                  ),
+                  WelcomeText(),
                   Container(
                     margin: EdgeInsets.all(20),
                     child: ButtonTheme(
@@ -46,7 +30,8 @@ class HomeScreen extends StatelessWidget {
                       height: 50.0,
                       child: RaisedButton(
                         color: Color(0xff00BFA6),
-                        onPressed: () {},
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/fridge'),
                         child: Text(
                           "Go",
                           style: GoogleFonts.lato(
