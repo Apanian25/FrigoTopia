@@ -31,7 +31,6 @@ resource_fields = {
 
 class Item(Resource):
     def get(self, user_id):
-        # abort_if_vid_id_doesnt_exist(video_id)
         result = getFridge(user_id)
         if not result:
             abort(404,  message="Could not find user")
@@ -39,7 +38,6 @@ class Item(Resource):
 
     @marshal_with(resource_fields)
     def put(self, user_id):
-        # abort_if_vid_exists(video_id)
         args = fridge_put_args.parse_args()
         result = addItem(user_id, args)
         if not result:
@@ -47,10 +45,11 @@ class Item(Resource):
 
         return result, 201
 
+    @marshal_with(resource_fields)
     def delete(self, user_id):
-        # userid in this cae has the name of the item to delete appended at the end
-        removeItem(user_id)
-        return '', 204 #deleted successfully
+        args = fridge_delete_args.parse_args()
+        removeItem(user_id, args['name'])
+        return {'message':'delete successfully'}, 204 #deleted successfully
 
 
 api.add_resource(Item, "/items/<string:user_id>")
