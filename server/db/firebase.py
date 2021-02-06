@@ -13,11 +13,12 @@ LIMIT = 1
 
 
 def get_fridge_contents(fridgeId, page):
+    # Offset is not good for scaling and pricing (counts as query)
+    # Ok for hackathon, change after
     fridge_ref = (db.collection(f"fridge/{fridgeId}/items")
                     .offset(LIMIT * int(page))
                     .limit(LIMIT)
                     .get())
-    
     
     fridge_items = []
     for item in fridge_ref:
