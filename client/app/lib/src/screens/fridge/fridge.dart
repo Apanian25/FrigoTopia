@@ -2,11 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import 'add_item.dart';
 import 'shine_animation.dart';
 
 class Fridge extends StatefulWidget {
@@ -100,6 +102,20 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
     });
   }
 
+  void showAddItemModal() {
+    showCupertinoModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      // useRootNavigator: true,
+      expand: true,
+      builder: (context) => AddItemModal(),
+      // builder: (context) => SingleChildScrollView(
+      //   controller: ModalScrollController.of(context),
+      //   child: Container(),
+      // ),
+    );
+  }
+
   SpeedDial buildSpeedDial() {
     return SpeedDial(
       animatedIcon: AnimatedIcons.menu_close,
@@ -114,14 +130,14 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
           child: Icon(Icons.receipt, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
           onTap: () => Navigator.pushNamed(context, '/camera'),
-          label: 'Take recipt picture',
+          label: 'Take receipt picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],
         ),
         SpeedDialChild(
           child: Icon(Icons.create, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
-          onTap: () => print('SECOND CHILD'),
+          onTap: showAddItemModal,
           label: 'Enter manually',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],
@@ -140,41 +156,48 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff00DCA7),
-      body: Stack(children: [
-        Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-                padding: const EdgeInsets.all(40.0),
-                child: Text.rich(
-                  TextSpan(
-                    text: 'Hello', // default text style
-                    style: TextStyle(fontSize: 20),
-                    children: <TextSpan>[
+    return GestureDetector(
+        onVerticalDragEnd: (dragEndDetails) {
+          if (dragEndDetails.primaryVelocity < 0) {
+            // Page forwards
+            showAddItemModal();
+          }
+        },
+        child: Scaffold(
+          backgroundColor: Color(0xff00DCA7),
+          body: Stack(children: [
+            Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Text.rich(
                       TextSpan(
-                          text: ' beautiful ',
-                          style: TextStyle(fontStyle: FontStyle.italic)),
-                      TextSpan(
-                          text: 'world',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ))),
-        Transform.scale(
-          alignment: Alignment.centerLeft,
-          scale: 0.9,
-          child: Align(
+                        text: 'Hello', // default text style
+                        style: TextStyle(fontSize: 20),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: ' beautiful ',
+                              style: TextStyle(fontStyle: FontStyle.italic)),
+                          TextSpan(
+                              text: 'world',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ))),
+            Transform.scale(
               alignment: Alignment.centerLeft,
-              child: _artboard == null
-                  ? const SizedBox()
-                  : GestureDetector(
-                      onDoubleTap: toggleOpen,
-                      child: Rive(artboard: _artboard),
-                    )),
-        )
-      ]),
-      floatingActionButton: buildSpeedDial(),
-    );
+              scale: 0.9,
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: _artboard == null
+                      ? const SizedBox()
+                      : GestureDetector(
+                          onDoubleTap: toggleOpen,
+                          child: Rive(artboard: _artboard),
+                        )),
+            )
+          ]),
+          floatingActionButton: buildSpeedDial(),
+        ));
   }
 }
