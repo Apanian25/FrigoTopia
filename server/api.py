@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from db.firebase import getFridge, addItem, removeItem
+from db.firebase import get_fridge_contents, addItem, removeItem
 from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
+from datetime import date, datetime
 
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ resource_fields = {
 
 class Item(Resource):
     def get(self, user_id):
-        result = getFridge(user_id)
+        result = get_fridge_contents(user_id)
         if not result:
             abort(404,  message="Could not find user")
         return result
@@ -62,6 +63,46 @@ class Receipt(Resource):
             print('image received')
         else:
             print('image not received')
+
+
+
+
+
+
+"""
+******************************************************************************
+Endpoint: /api/v1/items
+
+Description: Endpoint that will retrieve all of the contents of the fridge in 
+a paginated form. 
+
+Return: [{name: String, qty: Int, daysLeft: Int}]
+******************************************************************************
+"""
+@app.route('/api/v1/items', methods=['GET'])
+def items():
+    # Check if the userId was provided
+    if 'fridgeId' not in request.args:
+        return "Error"
+    
+    fridge_id = request.args['fridgeId']
+    results = get_fridge_contents(fridge_id, 0)
+    
+    # formatted_results = []
+    
+    # for result in results:
+    #     expiry_date = datetime.strptime(result['expiryDate'], '%Y-%m-%d').date()
+    #     today = date.today()
+        
+    #     formatted_results.append({
+    #             'daysLeft': (expiry_date - today).days,
+    #             'name': result['name'],
+    #             'qty': result['qty']
+    #         })
+    
+    # return jsonify(formatted_results)
+    
+    return jsonify(results)
 
 
 
