@@ -5,7 +5,7 @@ from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
-from RipenessDetection import RipenessDetection
+# from RipenessDetection import RipenessDetection
 import requests
 import numpy as np
 import cv2 as cv
@@ -149,7 +149,7 @@ Return: [{name: String, qty: Int, expiryDate: "YYYY-MM-DD", confidence: Int}]
 food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 
               'hot dog', 'pizza', 'donut', 'cake']
 image_detector = YoloDetection()
-ripeness_detector = RipenessDetection()
+# ripeness_detector = RipenessDetection()
 
 @app.route('/api/v1/image_upload', methods=['POST'])
 def items_from_image():
@@ -183,7 +183,8 @@ def items_from_image():
             parsed_food[label]['qty'] += 1
         else:
             if label == 'banana':
-                ripeness = ripeness_detector.get_ripeness(img)
+                # ripeness = ripeness_detector.get_ripeness(img)
+                riperness = None
             else: 
                 ripeness = None
                 

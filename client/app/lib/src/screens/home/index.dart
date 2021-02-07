@@ -1,5 +1,5 @@
 // home screen contents
-import 'package:app/src/screens/home/recipe_row/recipe_row.dart';
+import 'package:app/src/screens/recipes/recipes.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app/src/screens/home/welcomeText/welcomeText.dart';
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  RecipeRow()
+                  Recipe([])
                 ],
               ),
             )));

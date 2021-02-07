@@ -11,6 +11,7 @@ headers = {
 }
 
 notification_body = send_notifications()
+print(notification_body)
 if notification_body:
     print (notification_body)
     body = {
