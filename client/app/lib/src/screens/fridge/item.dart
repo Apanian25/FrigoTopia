@@ -28,7 +28,8 @@ class ItemData {
   int quantity;
 
   int daysLeft;
-  DateTime expiryDate;
+  String expiryDate;
+  String itemId;
 
   ItemData(
       {this.name,
@@ -36,7 +37,8 @@ class ItemData {
       this.tip,
       this.quantity,
       this.daysLeft,
-      this.expiryDate});
+      this.expiryDate,
+      this.itemId});
 }
 
 class Item extends StatefulWidget {
@@ -54,10 +56,12 @@ class Item extends StatefulWidget {
 }
 
 class _ItemState extends State<Item> {
+  double healthProgress;
+
   @override
   void initState() {
     super.initState();
-    print('State: ${widget.itemData}');
+    print('State: ${widget.itemData.daysLeft} ${widget.itemData.itemId}');
     // you can use this.widget.foo here
   }
 
@@ -68,23 +72,26 @@ class _ItemState extends State<Item> {
         // useRootNavigator: true,
         expand: true,
         builder: (context) => ItemForm(
-              itemCard: new ItemCard(
-                imagePath: widget.itemData.imagePath,
-                showName: false,
-                itemName: widget.itemData.name,
-                color: Colors
-                    .primaries[Random().nextInt(Colors.primaries.length)]
-                    .withOpacity(0.7),
-                addItem: ({ItemData data = null}) {
-                  print('Updating item: ${data}');
-                },
-              ),
-              isUpdating: true,
-              removeItem: widget.removeItem, //Switch to Update item
-              // builder: (context) => SingleChildScrollView(
-              //   controller: ModalScrollController.of(context),
-              //   child: Container(),
-              // ),
+            itemCard: new ItemCard(
+              imagePath: widget.itemData.imagePath,
+              showName: false,
+              itemName: widget.itemData.name,
+              color: Colors.primaries[Random().nextInt(Colors.primaries.length)]
+                  .withOpacity(0.7),
+              addItem: ({ItemData data = null}) {
+                print('Updating item: ${data}');
+              },
+            ),
+            isUpdating: true,
+            removeItem: widget.removeItem,
+            quantity: widget.itemData.quantity,
+            daysLeft: widget.itemData.daysLeft,
+            expiryDate: widget.itemData.expiryDate,
+            itemId: widget.itemData.itemId //Switch to Update item
+            // builder: (context) => SingleChildScrollView(
+            //   controller: ModalScrollController.of(context),
+            //   child: Container(),
+            // ),
             ));
   }
 
@@ -92,8 +99,18 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: showAddItemModal,
-        child: Image(
-            image: AssetImage(widget.itemData.imagePath ??
-                'assets/images/food/icons8-celery-100.png')));
+        child: Column(children: [
+          LinearProgressIndicator(
+            value: 1.0,
+            backgroundColor: widget.itemData.daysLeft <= 3
+                ? Colors.red[600]
+                : widget.itemData.daysLeft > 3 && widget.itemData.daysLeft <= 8
+                    ? Colors.yellow[600]
+                    : Colors.green[600],
+          ),
+          Image(
+              image: AssetImage(widget.itemData.imagePath ??
+                  'assets/images/food/icons8-celery-100.png'))
+        ]));
   }
 }
