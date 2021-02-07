@@ -149,8 +149,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         SpeedDialChild(
           child: Icon(Icons.camera, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
-          onTap: () =>
-              Navigator.pushNamed(context, '/camera', arguments: "fridge"),
+          onTap: () => Navigator.pushNamed(context, '/camera',
+              arguments: "image_upload"),
           label: 'Take fridge picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],

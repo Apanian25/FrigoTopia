@@ -276,6 +276,10 @@ def send_notifications():
 
     
     
+@app.route('/api/v1/test', methods=['GET'])
+def test():
+    print("FFFF")
+    return "Working"
 
 
 
@@ -283,4 +287,4 @@ api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)

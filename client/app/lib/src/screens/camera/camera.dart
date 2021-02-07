@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/src/screens/fridge/fridge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,10 +71,10 @@ class _MyCameraState extends State<CameraState> {
       'image': await MultipartFile.fromFile(_image.path, filename: fileName)
     });
 
+    String endpoint = "http://23.233.161.96/api/v1/" + this.from;
+
     Dio dio = new Dio();
-    dio
-        .post('http://23.233.161.96/api/v1/image_upload', data: data)
-        .then((response) {
+    dio.post(endpoint, data: data).then((response) {
       if (response.statusCode == 200) {
         print("GOOD");
         print(response.data);
@@ -115,7 +116,6 @@ class _MyCameraState extends State<CameraState> {
 
   @override
   Widget build(BuildContext context) {
-    print(this.from);
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Picker Example'),
