@@ -173,6 +173,14 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
     setState(() {});
   }
 
+  void removeItem({ItemData data = null}) {
+    items = items.where((i) {
+      print(i);
+      return i.name != data.name;
+    }).toList();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -232,8 +240,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                                       children: <Widget>[
                                         for (var i in items)
                                           Item(
-                                            itemData: i,
-                                          )
+                                              itemData: i,
+                                              removeItem: removeItem)
                                       ],
                                     )))
                             // Row(

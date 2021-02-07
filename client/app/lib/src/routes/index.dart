@@ -18,7 +18,7 @@ final String json = '''
 
 Route routes(RouteSettings settings) {
   switch (settings.name) {
-    case '/multiadd':
+    case '/':
       return MaterialPageRoute(builder: (_) => HomeScreen());
 
     case '/fridge':
@@ -27,7 +27,7 @@ Route routes(RouteSettings settings) {
     case '/camera':
       return MaterialPageRoute(builder: (_) => Camera(settings.arguments));
 
-    case '/':
+    case '/multiAdd':
       return MaterialPageRoute(builder: (_) => MultiAdd(json));
     //return MaterialPageRoute(builder: (_) => MultiAdd(settings.arguments));
     // case '/auth':
