@@ -9,7 +9,7 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
-LIMIT = 1
+LIMIT = 20
 
 
 def get_fridge_contents(fridgeId, page):
@@ -22,7 +22,9 @@ def get_fridge_contents(fridgeId, page):
     
     fridge_items = []
     for item in fridge_ref:
-        fridge_items.append(item.to_dict())  
+        dict = item.to_dict()
+        dict['itemId']= item.id
+        fridge_items.append(dict)  
 
 
     return fridge_items
@@ -30,7 +32,6 @@ def get_fridge_contents(fridgeId, page):
 
 
 def get_expiring_items():
-    print("made it this far")
     # Offset is not good for scaling and pricing (counts as query)
     # Ok for hackathon, change after
     fridge_ref = (db.collection("fridge/jCWuzPNfKdw1MKztfzSI/items")
