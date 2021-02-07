@@ -43,9 +43,9 @@ class _Recipe extends State<Recipe> {
     return Container(
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Validate Options'),
+            title: Text('Recipes'),
           ),
-          body: Flexible(child: Scroller(items: _items), flex: 1)),
+          body: Container(child: Scroller(items: _items))),
     );
   }
 }
