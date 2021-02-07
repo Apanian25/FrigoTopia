@@ -13,8 +13,6 @@ class Scroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List<String> floufs = new List();
-
     return ListView.builder(
         itemCount: this.items.length,
         itemBuilder: (BuildContext context, int index) {
