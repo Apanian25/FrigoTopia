@@ -12,8 +12,8 @@ class Camera extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CameraState(this.from),
+    return Container(
+      child: CameraState(this.from),
     );
   }
 }
@@ -76,7 +76,7 @@ class _MyCameraState extends State<CameraState> {
       if (response.statusCode == 200) {
         print("GOOD");
         print(response.data);
-        Navigator.pushNamed(context, '/multiadd', arguments: "test");
+        Navigator.pushNamed(context, '/multiadd', arguments: response.data);
       } else {
         print("BAD");
       }

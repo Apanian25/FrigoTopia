@@ -1,6 +1,8 @@
 import 'package:app/src/app.dart';
 import 'package:flutter/material.dart';
 
+import 'multiadditem/multiadditem.dart';
+
 class InfiniteScroll extends StatefulWidget {
   List<Object> items;
   InfiniteScroll(items) {
@@ -26,33 +28,15 @@ class InfiniteScrollState extends State<InfiniteScroll> {
   Widget build(BuildContext context) {
     // List<String> floufs = new List();
     print(this.items);
-    List<String> floufs = [
-      'Kiss',
-      'My',
-      'Ass',
-      'Kiss',
-      'My',
-      'Ass',
-      'Kiss',
-      'My',
-      'Ass',
-      'Kiss',
-      'My',
-      'Ass',
-      'Kiss',
-      'My',
-      'Ass',
-      'Kiss',
-      'My',
-      'Ass',
-    ];
 
     return ListView.builder(
-        itemCount: floufs.length,
+        itemCount: this.items.length,
         itemBuilder: (BuildContext context, int index) {
+          dynamic item = this.items[index];
           return Container(
-            constraints: BoxConstraints.tightFor(height: 50),
-            child: Text(floufs[index]),
+            constraints: BoxConstraints.tightFor(height: 150),
+            child: MultiAddItem(
+                int.parse(item['qty']), item['name'], item['expiryDate']),
           );
         });
   }

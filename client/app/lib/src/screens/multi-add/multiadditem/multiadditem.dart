@@ -82,7 +82,8 @@ class _MultiAddItem extends State<MultiAddItem> {
                   Row(
                     children: [
                       IconButton(
-                          icon: Icon(Icons.remove),
+                          icon: Icon(Icons.remove,
+                              color: Colors.black54, size: 20),
                           onPressed: () => setState(() {
                                 if (_qty > 0) {
                                   _qty = _qty - 1;
@@ -97,7 +98,8 @@ class _MultiAddItem extends State<MultiAddItem> {
                                 letterSpacing: .5),
                           )),
                       IconButton(
-                          icon: Icon(Icons.add),
+                          icon:
+                              Icon(Icons.add, color: Colors.black54, size: 20),
                           onPressed: () => setState(() {
                                 _qty = _qty + 1;
                               }))
