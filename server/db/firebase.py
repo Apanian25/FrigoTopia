@@ -9,7 +9,7 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
-LIMIT = 1
+LIMIT = 20
 
 
 def get_fridge_contents(fridgeId, page):
