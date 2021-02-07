@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:app/src/screens/fridge/food_item_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app/src/screens/home/welcomeText/welcomeText.dart';
 
+import 'multiadditem/multiadditem.dart';
+
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  MultiAddItem()
                 ],
               ),
             )));
