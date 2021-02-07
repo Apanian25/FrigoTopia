@@ -48,8 +48,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  MultiAddItem()
+                  )
                 ],
               ),
             )));

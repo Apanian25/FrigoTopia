@@ -3,15 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:app/src/screens/fridge/food_item_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MultiAddItem extends StatelessWidget {
+class MultiAddItem extends StatefulWidget {
+  @override
+  _MultiAddItem createState() => new _MultiAddItem();
+}
+
+class _MultiAddItem extends State<MultiAddItem> {
+  int _qty = 1;
+  String _name = 'Banana';
+  String _expiryDate = '2021-02-11';
+
   @override
   Widget build(BuildContext context) {
+    String foodType = _name.toLowerCase();
     return Row(
       children: [
         Expanded(
           flex: 3,
           child: Container(
-            child: Image.asset(foodDict['banana']),
+            child: Image.asset(foodDict[foodType]),
             decoration: BoxDecoration(
                 color: Color.fromRGBO(225, 240, 225, 1),
                 // border: Border.all(
@@ -30,7 +40,7 @@ class MultiAddItem extends StatelessWidget {
                   Container(
                       margin: EdgeInsets.only(bottom: 3.0),
                       child: Text(
-                        'Banana',
+                        _name,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                               color: Colors.black54,
@@ -40,7 +50,7 @@ class MultiAddItem extends StatelessWidget {
                         ),
                       )),
                   Text(
-                    'Expires: 2021-02-11',
+                    'Expires: ' + _expiryDate,
                     style: GoogleFonts.lato(
                       textStyle: TextStyle(
                           color: Colors.black54,
@@ -52,8 +62,13 @@ class MultiAddItem extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                          icon: Icon(Icons.remove), onPressed: () => "Pressed"),
-                      Text('6',
+                          icon: Icon(Icons.remove),
+                          onPressed: () => setState(() {
+                                if (_qty > 0) {
+                                  _qty = _qty - 1;
+                                }
+                              })),
+                      Text(_qty.toString(),
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
                                 color: Colors.black54,
@@ -62,7 +77,10 @@ class MultiAddItem extends StatelessWidget {
                                 letterSpacing: .5),
                           )),
                       IconButton(
-                          icon: Icon(Icons.add), onPressed: () => "Pressed"),
+                          icon: Icon(Icons.add),
+                          onPressed: () => setState(() {
+                                _qty = _qty + 1;
+                              }))
                     ],
                   ),
                 ],
