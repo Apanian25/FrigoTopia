@@ -10,8 +10,8 @@ data = [
     {"name": "Orange", "expiryDate": "2021-02-10", "qty": 2, "weight": 3, "price": 2},
 ]
 
-response = requests.get(BASE + "api/v1/items?page=0")
-print(response.json())
+# response = requests.get(BASE + "api/v1/items?page=0")
+# print(response.json())
 
 # for i in range(len(data)):
 #     response = requests.put(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data[i])
@@ -20,5 +20,5 @@ print(response.json())
 # response = requests.put(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data[0])
 # print(response.json())
 
-# response = requests.delete(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data={'itemId': 'LYn5uflCsJlicZR02h2w'})
-# print(response)
+response = requests.delete(BASE + "api/v1/modify/items", data={'itemId': '6ziGPSjc3m4P7OG06V9Z'})
+print(response)

@@ -41,7 +41,11 @@ class _Recipe extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Flexible(child: Scroller(items: _items), flex: 1),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Validate Options'),
+          ),
+          body: Flexible(child: Scroller(items: _items), flex: 1)),
     );
   }
 }
