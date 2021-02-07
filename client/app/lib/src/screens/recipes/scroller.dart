@@ -1,4 +1,3 @@
-import 'package:app/src/app.dart';
 import 'package:app/src/screens/recipes/recipeItem.dart';
 import 'package:flutter/material.dart';
 
