@@ -178,11 +178,12 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                         onTap: () {
                           var itemName = foodDict[foodDict.keys
                               .elementAt((Random().nextInt(foodDict.length)))];
+                          var item = ItemData(imagePath: itemName);
                           print('Adding item: ${itemName}');
                           setState(() {
-                            items.add(ItemData(name: itemName));
+                            items.add(item);
                           });
-                          print(items);
+                          print(item.imagePath);
                         },
                         child: Text.rich(
                           TextSpan(

@@ -53,7 +53,7 @@ class _ItemState extends State<Item> {
   @override
   void initState() {
     super.initState();
-    print('State: ${this.widget.itemData.imagePath}');
+    print('State: ${widget.itemData}');
     // you can use this.widget.foo here
   }
 
@@ -76,6 +76,7 @@ class _ItemState extends State<Item> {
     return GestureDetector(
         onTap: showAddItemModal,
         child: Image(
-            image: AssetImage('assets/images/food/icons8-celery-100.png')));
+            image: AssetImage(widget.itemData.imagePath ??
+                'assets/images/food/icons8-celery-100.png')));
   }
 }
