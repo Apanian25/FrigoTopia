@@ -256,8 +256,6 @@ Return: Success!
 ******************************************************************************
 """
 PHRASE = "Be Aware! You have {} food item{} expiring soon!!! Click here to see some ways to use them!"
-
-@app.route('/api/v1/notifications', methods=['GET'])
 def send_notifications():
     results = get_expiring_items()
     
@@ -272,12 +270,16 @@ def send_notifications():
             qty += 1
             
     if (qty < 1):
-        return "Do Nothing!"
+        return None
     
     return PHRASE.format(qty, ('s', '')[qty == 1])
 
     
     
+@app.route('/api/v1/test', methods=['GET'])
+def test():
+    print("FFFF")
+    return "Working"
 
 
 
@@ -285,4 +287,4 @@ api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
