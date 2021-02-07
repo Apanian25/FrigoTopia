@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:app/src/screens/fridge/fridge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';
 
 class Camera extends StatelessWidget {
   String from;
@@ -78,6 +76,7 @@ class _MyCameraState extends State<CameraState> {
       if (response.statusCode == 200) {
         print("GOOD");
         print(response.data);
+        Navigator.pushNamed(context, '/multiadd', arguments: "test");
       } else {
         print("BAD");
       }

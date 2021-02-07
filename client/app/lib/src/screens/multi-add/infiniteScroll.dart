@@ -2,14 +2,21 @@ import 'package:app/src/app.dart';
 import 'package:flutter/material.dart';
 
 class InfiniteScroll extends StatefulWidget {
-  final String text;
-  const InfiniteScroll({this.text});
+  List<Object> items;
+  InfiniteScroll(items) {
+    this.items = items;
+  }
 
   @override
-  InfiniteScrollState createState() => InfiniteScrollState();
+  InfiniteScrollState createState() => InfiniteScrollState(this.items);
 }
 
 class InfiniteScrollState extends State<InfiniteScroll> {
+  List<Object> items;
+  InfiniteScrollState(items) {
+    this.items = items;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -18,6 +25,7 @@ class InfiniteScrollState extends State<InfiniteScroll> {
   @override
   Widget build(BuildContext context) {
     // List<String> floufs = new List();
+    print(this.items);
     List<String> floufs = [
       'Kiss',
       'My',

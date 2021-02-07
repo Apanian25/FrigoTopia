@@ -2,6 +2,13 @@ import 'package:app/src/screens/multi-add/infiniteScroll.dart';
 import 'package:flutter/material.dart';
 
 class MultiAdd extends StatelessWidget {
+  List<Object> items;
+
+  MultiAdd(items) {
+    print(items);
+    this.items = new List<Object>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +20,9 @@ class MultiAdd extends StatelessWidget {
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Flexible(child: Container(child: InfiniteScroll()), flex: 10),
+              Flexible(
+                  child: Container(child: InfiniteScroll(this.items)),
+                  flex: 10),
               Flexible(
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
