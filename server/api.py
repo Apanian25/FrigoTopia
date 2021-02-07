@@ -256,8 +256,6 @@ Return: Success!
 ******************************************************************************
 """
 PHRASE = "Be Aware! You have {} food item{} expiring soon!!! Click here to see some ways to use them!"
-
-@app.route('/api/v1/notifications', methods=['GET'])
 def send_notifications():
     results = get_expiring_items()
     
@@ -272,7 +270,7 @@ def send_notifications():
             qty += 1
             
     if (qty < 1):
-        return "Do Nothing!"
+        return None
     
     return PHRASE.format(qty, ('s', '')[qty == 1])
 
