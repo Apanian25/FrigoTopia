@@ -28,7 +28,7 @@ class RecipeRow extends StatelessWidget {
           }
         },
         child: Container(
-            padding: EdgeInsets.only(top: 15.0, bottom: 10),
+            padding: EdgeInsets.only(top: 10.0, bottom: 10),
             margin: EdgeInsets.only(top: 10.0, bottom: 10, left: 10, right: 10),
             decoration: BoxDecoration(
                 color: Color.fromRGBO(225, 240, 225, 1),
