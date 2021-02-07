@@ -4,11 +4,40 @@ import 'package:app/src/screens/multi-add/infiniteScroll.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MultiAdd extends StatelessWidget {
+class MultiAdd extends StatefulWidget {
   List<dynamic> items;
 
   MultiAdd(items) {
     this.items = jsonDecode(items);
+  }
+
+  @override
+  _MultiAdd createState() => new _MultiAdd(this.items);
+}
+
+class _MultiAdd extends State<MultiAdd> {
+  List<dynamic> _items;
+  _MultiAdd(items) {
+    _items = items;
+  }
+
+  Future updateQty(name, exp, value, tip) async {
+    if (value > 0) {
+      setState(() {
+        _items[_items.indexWhere((element) => element['name'] == name)] = {
+          "name": name,
+          "expiryDate": exp,
+          "qty": value.toString(),
+          "tip": tip
+        };
+      });
+    }
+  }
+
+  Future delete(name) async {
+    setState(() {
+      _items.removeAt(_items.indexWhere((element) => element['name'] == name));
+    });
   }
 
   @override
@@ -22,7 +51,8 @@ class MultiAdd extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-                  child: Container(child: InfiniteScroll(this.items)),
+                  child: Container(
+                      child: InfiniteScroll(_items, updateQty, delete)),
                   flex: 10),
               Flexible(
                   flex: 2,
