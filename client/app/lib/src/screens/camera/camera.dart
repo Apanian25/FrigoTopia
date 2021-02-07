@@ -1,7 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
 class Camera extends StatelessWidget {
   @override
@@ -33,6 +34,28 @@ class _MyCameraState extends State<CameraState> {
     });
   }
 
+  Future sendImage() async {
+    // http.post('http://127.0.0.1:5000/api/v1/image_upload',
+    //     body: {"image": _image});
+    String fileName = _image.path.split('/').last;
+
+    FormData data = FormData.fromMap({
+      'image': await MultipartFile.fromFile(_image.path, filename: fileName)
+    });
+
+    Dio dio = new Dio();
+    dio
+        .post('http://23.233.161.96/api/v1/image_upload', data: data)
+        .then((response) {
+      if (response.statusCode == 200) {
+        print("GOOD");
+        print(response.data);
+      } else {
+        print("BAD");
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +64,12 @@ class _MyCameraState extends State<CameraState> {
       ),
       body: Center(
         child: _image == null ? Text('No image selected.') : Image.file(_image),
+        //child: Column(children: )
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Pick Image',
-        child: Icon(Icons.add_a_photo),
-      ),
+          onPressed: _image == null ? getImage : sendImage,
+          tooltip: 'Pick Image',
+          child: _image == null ? Icon(Icons.add_a_photo) : Icon(Icons.send)),
     );
   }
 }
