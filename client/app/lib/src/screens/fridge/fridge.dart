@@ -1,6 +1,7 @@
 // home screen contents
 import 'dart:math';
 import 'package:app/src/screens/fridge/item.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -91,6 +92,26 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _loadRiveFile();
+
+    String endpoint = "http://23.233.161.96/api/v1/items?page=0";
+    Dio dio = new Dio();
+    dio.get(endpoint).then((response) {
+      if (response.statusCode == 200) {
+        setState(() {
+          dynamic temps = response.data;
+          for (var temp in temps) {
+            String name = temp['name'].toLowerCase();
+            items.add(new ItemData(
+                name: name,
+                imagePath: foodDict[name],
+                quantity: int.parse(temp['qty']),
+                daysLeft: temp['daysLeft']));
+          }
+        });
+      } else {
+        print("BAD");
+      }
+    });
 
     scrollController = ScrollController()
       ..addListener(() {
