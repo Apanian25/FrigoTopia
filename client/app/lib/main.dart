@@ -1,4 +1,5 @@
 import 'package:app/src/app.dart';
+import 'package:app/src/screens/multi-add/page.dart';
 import 'package:app/src/utils/app_state_notifier.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -30,7 +31,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   runApp(ChangeNotifierProvider<AppStateNotifier>(
     create: (_) => AppStateNotifier(),
-    child: App(),
+    child: MultiAdd(),
   ));
 // );?
 }
