@@ -22,9 +22,9 @@ class ItemData {
   String imagePath = "assets/images/logo.png";
 
   String tip;
-  IntProperty quantity;
+  int quantity;
 
-  IntProperty daysLeft;
+  int daysLeft;
   DateTime expiryDate;
 
   ItemData(

@@ -6,7 +6,7 @@ final foodDict = {
   'coconut': 'assets/images/food/icons8-coconut-milk-100.png',
   'lychee': 'assets/images/food/icons8-lychee-100.png',
   'potato': 'assets/images/food/icons8-potato-100.png',
-  'soy': 'assets/images/food/icons8-soy-sauce-100.png',
+  'soy sauce': 'assets/images/food/icons8-soy-sauce-100.png',
   'cheese': 'assets/images/food/icons8-cheese-100.png',
   'peach': 'assets/images/food/icons8-peach-100.png',
   'apple': 'assets/images/food/icons8-apple-100.png',
@@ -34,7 +34,7 @@ final foodDict = {
   'cotton': 'assets/images/food/icons8-cotton-candy-100.png',
   'samosa': 'assets/images/food/icons8-samosa-100.png',
   'spring': 'assets/images/food/icons8-spring-roll-100.png',
-  'melting': 'assets/images/food/icons8-melting-ice-cream-100.png',
+  'ice cream': 'assets/images/food/icons8-melting-ice-cream-100.png',
   'rice': 'assets/images/food/icons8-rice-vinegar-100.png',
   'merry': 'assets/images/food/icons8-merry-pie-100.png',
   'greek': 'assets/images/food/icons8-greek-salad-100.png',
@@ -79,12 +79,12 @@ final foodDict = {
   'omlette': 'assets/images/food/icons8-omlette-100.png',
   'chicken': 'assets/images/food/icons8-chicken-and-waffle-100.png',
   'lentil': 'assets/images/food/icons8-lentil-100.png',
-  'french': 'assets/images/food/icons8-french-fries-100.png',
+  'french fries': 'assets/images/food/icons8-french-fries-100.png',
   'pear': 'assets/images/food/icons8-pear-100.png',
   'cake': 'assets/images/food/icons8-cake-100.png',
   'wine': 'assets/images/food/icons8-wine-100.png',
   'grapes': 'assets/images/food/icons8-grapes-100.png',
-  'white': 'assets/images/food/icons8-white-beans-100.png',
+  'white beans': 'assets/images/food/icons8-white-beans-100.png',
   'bagel': 'assets/images/food/icons8-bagel-100.png',
   'plum': 'assets/images/food/icons8-plum-100.png',
   'croissant': 'assets/images/food/icons8-croissant-100.png',
@@ -122,7 +122,7 @@ final foodDict = {
   'coffee': 'assets/images/food/icons8-coffee-capsule-100.png',
   'lasagna': 'assets/images/food/icons8-lasagna-100.png',
   'apricot': 'assets/images/food/icons8-apricot-100.png',
-  'whole': 'assets/images/food/icons8-whole-watermelon-100.png',
+  // 'whole': 'assets/images/food/icons8-whole-watermelon-100.png',
   'peanuts': 'assets/images/food/icons8-peanuts-100.png',
   'onion': 'assets/images/food/icons8-onion-100.png',
   'sunflower': 'assets/images/food/icons8-sunflower-butter-100.png',
@@ -148,16 +148,16 @@ final foodDict = {
   'asparagus': 'assets/images/food/icons8-asparagus-100.png',
   'bento': 'assets/images/food/icons8-bento-100.png',
   'wrap': 'assets/images/food/icons8-wrap-100.png',
-  'half': 'assets/images/food/icons8-half-orange-100.png',
+  'orange': 'assets/images/food/icons8-half-orange-100.png',
   'brigadeiro': 'assets/images/food/icons8-brigadeiro-100.png',
   'mushroom': 'assets/images/food/icons8-mushroom-100.png',
   'carrot': 'assets/images/food/icons8-carrot-100.png',
   'maple': 'assets/images/food/icons8-maple-syrup-100.png',
   'octopus': 'assets/images/food/icons8-octopus-100.png',
-  'rack': 'assets/images/food/icons8-rack-of-lamb-100.png',
-  'firm': 'assets/images/food/icons8-firm-tofu-100.png',
+  'rack of lamb': 'assets/images/food/icons8-rack-of-lamb-100.png',
+  'firm tofu': 'assets/images/food/icons8-firm-tofu-100.png',
   'paella': 'assets/images/food/icons8-paella-100.png',
-  'hot': 'assets/images/food/icons8-hot-dog-100.png',
+  'hot dog': 'assets/images/food/icons8-hot-dog-100.png',
   'prawn': 'assets/images/food/icons8-prawn-100.png',
   'leek': 'assets/images/food/icons8-leek-100.png',
   'spaghetti': 'assets/images/food/icons8-spaghetti-100.png'
@@ -247,7 +247,7 @@ var foodList = [
     'imagePath': 'assets/images/food/icons8-spring-roll-100.png'
   },
   {
-    'name': 'melting',
+    'name': 'ice cream',
     'imagePath': 'assets/images/food/icons8-melting-ice-cream-100.png'
   },
   {
@@ -348,7 +348,7 @@ var foodList = [
   },
   {'name': 'lentil', 'imagePath': 'assets/images/food/icons8-lentil-100.png'},
   {
-    'name': 'french',
+    'name': 'french fries',
     'imagePath': 'assets/images/food/icons8-french-fries-100.png'
   },
   {'name': 'pear', 'imagePath': 'assets/images/food/icons8-pear-100.png'},
@@ -356,7 +356,7 @@ var foodList = [
   {'name': 'wine', 'imagePath': 'assets/images/food/icons8-wine-100.png'},
   {'name': 'grapes', 'imagePath': 'assets/images/food/icons8-grapes-100.png'},
   {
-    'name': 'white',
+    'name': 'white beans',
     'imagePath': 'assets/images/food/icons8-white-beans-100.png'
   },
   {'name': 'bagel', 'imagePath': 'assets/images/food/icons8-bagel-100.png'},
@@ -432,10 +432,10 @@ var foodList = [
   },
   {'name': 'lasagna', 'imagePath': 'assets/images/food/icons8-lasagna-100.png'},
   {'name': 'apricot', 'imagePath': 'assets/images/food/icons8-apricot-100.png'},
-  {
-    'name': 'whole',
-    'imagePath': 'assets/images/food/icons8-whole-watermelon-100.png'
-  },
+  // {
+  //   'name': 'watermelon',
+  //   'imagePath': 'assets/images/food/icons8-whole-watermelon-100.png'
+  // },
   {'name': 'peanuts', 'imagePath': 'assets/images/food/icons8-peanuts-100.png'},
   {'name': 'onion', 'imagePath': 'assets/images/food/icons8-onion-100.png'},
   {
@@ -443,7 +443,7 @@ var foodList = [
     'imagePath': 'assets/images/food/icons8-sunflower-butter-100.png'
   },
   {
-    'name': 'ice',
+    'name': 'ice cream',
     'imagePath': 'assets/images/food/icons8-ice-cream-cone-100.png'
   },
   {'name': 'gailan', 'imagePath': 'assets/images/food/icons8-gailan-100.png'},
@@ -453,7 +453,10 @@ var foodList = [
     'imagePath': 'assets/images/food/icons8-rolled-oats-100.png'
   },
   {'name': 'taco', 'imagePath': 'assets/images/food/icons8-taco-100.png'},
-  {'name': 'soy', 'imagePath': 'assets/images/food/icons8-soy-sauce-100.png'},
+  {
+    'name': 'soy sauce',
+    'imagePath': 'assets/images/food/icons8-soy-sauce-100.png'
+  },
   {'name': 'chard', 'imagePath': 'assets/images/food/icons8-chard-100.png'},
   {'name': 'salami', 'imagePath': 'assets/images/food/icons8-salami-100.png'},
   {'name': 'cashew', 'imagePath': 'assets/images/food/icons8-cashew-100.png'},
@@ -498,7 +501,7 @@ var foodList = [
   {'name': 'bento', 'imagePath': 'assets/images/food/icons8-bento-100.png'},
   {'name': 'wrap', 'imagePath': 'assets/images/food/icons8-wrap-100.png'},
   {
-    'name': 'half',
+    'name': 'orange',
     'imagePath': 'assets/images/food/icons8-half-orange-100.png'
   },
   {
@@ -516,13 +519,16 @@ var foodList = [
   },
   {'name': 'octopus', 'imagePath': 'assets/images/food/icons8-octopus-100.png'},
   {
-    'name': 'rack',
+    'name': 'rack of lamb',
     'imagePath': 'assets/images/food/icons8-rack-of-lamb-100.png'
   },
-  {'name': 'firm', 'imagePath': 'assets/images/food/icons8-firm-tofu-100.png'},
+  {
+    'name': 'firm tofu',
+    'imagePath': 'assets/images/food/icons8-firm-tofu-100.png'
+  },
   {'name': 'paella', 'imagePath': 'assets/images/food/icons8-paella-100.png'},
   {'name': 'olive', 'imagePath': 'assets/images/food/icons8-olive-100.png'},
-  {'name': 'hot', 'imagePath': 'assets/images/food/icons8-hot-dog-100.png'},
+  {'name': 'hot dog', 'imagePath': 'assets/images/food/icons8-hot-dog-100.png'},
   {'name': 'prawn', 'imagePath': 'assets/images/food/icons8-prawn-100.png'},
   {'name': 'leek', 'imagePath': 'assets/images/food/icons8-leek-100.png'},
   {

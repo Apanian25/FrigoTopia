@@ -111,7 +111,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
       enableDrag: true,
       // useRootNavigator: true,
       expand: true,
-      builder: (context) => AddItemModal(),
+      builder: (context) => AddItemModal(addItem: addItem),
       // builder: (context) => SingleChildScrollView(
       //   controller: ModalScrollController.of(context),
       //   child: Container(),
@@ -159,6 +159,20 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
     );
   }
 
+  void addItem({ItemData data = null}) {
+    if (data is Null) {
+      var itemName = foodDict[
+          foodDict.keys.elementAt((Random().nextInt(foodDict.length)))];
+      var item = ItemData(imagePath: itemName);
+      print('Adding item: ${itemName}');
+      items.add(item);
+    } else {
+      items.add(data);
+      print('Adding item: ${data}');
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -176,16 +190,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                 child: Container(
                     padding: const EdgeInsets.all(10.0),
                     child: GestureDetector(
-                        onTap: () {
-                          var itemName = foodDict[foodDict.keys
-                              .elementAt((Random().nextInt(foodDict.length)))];
-                          var item = ItemData(imagePath: itemName);
-                          print('Adding item: ${itemName}');
-                          setState(() {
-                            items.add(item);
-                          });
-                          print(item.imagePath);
-                        },
+                        onTap: addItem,
                         child: Text.rich(
                           TextSpan(
                             text: 'Hello', // default text style
