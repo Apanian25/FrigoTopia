@@ -3,31 +3,20 @@ import 'package:flutter/material.dart';
 
 import 'multiadditem/multiadditem.dart';
 
-class InfiniteScroll extends StatefulWidget {
+class InfiniteScroll extends StatelessWidget {
   List<Object> items;
-  InfiniteScroll(items) {
+  Function updateQty;
+  Function delete;
+
+  InfiniteScroll(items, updateQty, delete) {
     this.items = items;
-  }
-
-  @override
-  InfiniteScrollState createState() => InfiniteScrollState(this.items);
-}
-
-class InfiniteScrollState extends State<InfiniteScroll> {
-  List<Object> items;
-  InfiniteScrollState(items) {
-    this.items = items;
-  }
-
-  @override
-  void initState() {
-    super.initState();
+    this.updateQty = updateQty;
+    this.delete = delete;
   }
 
   @override
   Widget build(BuildContext context) {
     // List<String> floufs = new List();
-    print(this.items);
 
     return ListView.builder(
         itemCount: this.items.length,
@@ -35,8 +24,8 @@ class InfiniteScrollState extends State<InfiniteScroll> {
           dynamic item = this.items[index];
           return Container(
             constraints: BoxConstraints.tightFor(height: 150),
-            child: MultiAddItem(
-                int.parse(item['qty']), item['name'], item['expiryDate']),
+            child: MultiAddItem(int.parse(item['qty']), item['name'],
+                item['expiryDate'], item['tip'], this.updateQty, this.delete),
           );
         });
   }

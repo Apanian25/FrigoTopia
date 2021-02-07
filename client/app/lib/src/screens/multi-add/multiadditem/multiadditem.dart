@@ -3,34 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:app/src/screens/fridge/food_item_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MultiAddItem extends StatefulWidget {
-  int qty;
-  String name;
-  String expiryDate;
-
-  MultiAddItem(int qty, String name, String expiryDate) {
-    this.qty = qty;
-    this.name = name;
-    this.expiryDate = expiryDate;
-  }
-
-  @override
-  _MultiAddItem createState() =>
-      new _MultiAddItem(this.qty, this.name, this.expiryDate);
-}
-
-class _MultiAddItem extends State<MultiAddItem> {
+class MultiAddItem extends StatelessWidget {
   // int _qty = 1;
   // String _name = 'Banana';
   // String _expiryDate = '2021-02-11';
   int _qty;
   String _name;
   String _expiryDate;
+  String _tip;
+  Function _updateQty;
+  Function _delete;
 
-  _MultiAddItem(int qty, String name, String expiryDate) {
+  MultiAddItem(int qty, String name, String expiryDate, String tip,
+      Function updateQty, Function delete) {
     _qty = qty;
     _name = name;
     _expiryDate = expiryDate;
+    _tip = tip;
+    _updateQty = updateQty;
+    _delete = delete;
   }
 
   @override
@@ -82,13 +73,17 @@ class _MultiAddItem extends State<MultiAddItem> {
                   Row(
                     children: [
                       IconButton(
-                          icon: Icon(Icons.remove,
-                              color: Colors.black54, size: 20),
-                          onPressed: () => setState(() {
-                                if (_qty > 0) {
-                                  _qty = _qty - 1;
-                                }
-                              })),
+                        icon:
+                            Icon(Icons.remove, color: Colors.black54, size: 20),
+                        onPressed: () =>
+                            _updateQty(_name, _expiryDate, _qty + 1, _tip),
+                        // onPressed: () => setState(() {
+                        //       if (_qty > 0) {
+                        //         _qty = _qty - 1;
+                        //         _updateQty(_qty);
+                        //       }
+                        //     })
+                      ),
                       Text(_qty.toString(),
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
@@ -98,13 +93,24 @@ class _MultiAddItem extends State<MultiAddItem> {
                                 letterSpacing: .5),
                           )),
                       IconButton(
-                          icon:
-                              Icon(Icons.add, color: Colors.black54, size: 20),
-                          onPressed: () => setState(() {
-                                _qty = _qty + 1;
-                              }))
+                        icon: Icon(Icons.add, color: Colors.black54, size: 20),
+                        onPressed: () =>
+                            _updateQty(_name, _expiryDate, _qty + 1, _tip),
+                        // onPressed: () => setState(() {
+                        //       _qty = _qty + 1;
+                        //       _updateQty(_qty);
+                        //     })
+                      )
                     ],
                   ),
+                  Text(_tip == 'null' ? '' : _tip,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: .5),
+                      )),
                 ],
               )),
         ),
@@ -114,6 +120,7 @@ class _MultiAddItem extends State<MultiAddItem> {
               margin: EdgeInsets.only(top: 85.0),
               child: IconButton(
                 icon: Icon(Icons.delete_forever, color: Colors.red[700]),
+                onPressed: () => _delete(_name),
               ),
             ))
       ],

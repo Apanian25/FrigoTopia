@@ -1,14 +1,52 @@
 import 'dart:convert';
 
 import 'package:app/src/screens/multi-add/infiniteScroll.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MultiAdd extends StatelessWidget {
+class MultiAdd extends StatefulWidget {
   List<dynamic> items;
 
   MultiAdd(items) {
     this.items = jsonDecode(items);
+  }
+
+  @override
+  _MultiAdd createState() => new _MultiAdd(this.items);
+}
+
+class _MultiAdd extends State<MultiAdd> {
+  List<dynamic> _items;
+  _MultiAdd(items) {
+    _items = items;
+  }
+
+  Future updateQty(name, exp, value, tip) async {
+    if (value > 0) {
+      setState(() {
+        _items[_items.indexWhere((element) => element['name'] == name)] = {
+          "name": name,
+          "expiryDate": exp,
+          "qty": value.toString(),
+          "tip": tip
+        };
+      });
+    }
+  }
+
+  Future delete(name) async {
+    setState(() {
+      _items.removeAt(_items.indexWhere((element) => element['name'] == name));
+    });
+  }
+
+  Future addItems() async {
+    Dio dio = new Dio();
+
+    for (var item in _items) {
+      dio.put('http://23.233.161.96/api/v1/modify/items', data: item);
+    }
   }
 
   @override
@@ -22,7 +60,8 @@ class MultiAdd extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-                  child: Container(child: InfiniteScroll(this.items)),
+                  child: Container(
+                      child: InfiniteScroll(_items, updateQty, delete)),
                   flex: 10),
               Flexible(
                   flex: 2,
@@ -46,7 +85,12 @@ class MultiAdd extends StatelessWidget {
                                         top: 10.0,
                                         bottom: 0),
                                     child: Text(
-                                      "Totel Items: 6",
+                                      "Totel Items: " +
+                                          _items.fold(
+                                              '0',
+                                              (sum, item) => (int.parse(sum) +
+                                                      int.parse(item['qty']))
+                                                  .toString()),
                                       style: GoogleFonts.lato(
                                         textStyle: TextStyle(
                                             color: Colors.black54,
@@ -68,7 +112,7 @@ class MultiAdd extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(color: Color(0000000))),
                                 onPressed: () {
-                                  print("press");
+                                  addItems();
                                 },
                                 color: Color(0xffa6e4a6),
                                 textColor: Color(0xff396339),
