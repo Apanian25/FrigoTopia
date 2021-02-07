@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/src/screens/multi-add/infiniteScroll.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -40,6 +41,14 @@ class _MultiAdd extends State<MultiAdd> {
     });
   }
 
+  Future addItems() async {
+    Dio dio = new Dio();
+
+    for (var item in _items) {
+      dio.put('http://23.233.161.96/api/v1/modify/items', data: item);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,7 +85,12 @@ class _MultiAdd extends State<MultiAdd> {
                                         top: 10.0,
                                         bottom: 0),
                                     child: Text(
-                                      "Totel Items: 6",
+                                      "Totel Items: " +
+                                          _items.fold(
+                                              '0',
+                                              (sum, item) => (int.parse(sum) +
+                                                      int.parse(item['qty']))
+                                                  .toString()),
                                       style: GoogleFonts.lato(
                                         textStyle: TextStyle(
                                             color: Colors.black54,
@@ -98,7 +112,7 @@ class _MultiAdd extends State<MultiAdd> {
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: BorderSide(color: Color(0000000))),
                                 onPressed: () {
-                                  print("press");
+                                  addItems();
                                 },
                                 color: Color(0xffa6e4a6),
                                 textColor: Color(0xff396339),
