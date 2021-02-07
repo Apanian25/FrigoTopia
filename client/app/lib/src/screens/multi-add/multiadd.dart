@@ -47,6 +47,8 @@ class _MultiAdd extends State<MultiAdd> {
     for (var item in _items) {
       dio.put('http://23.233.161.96/api/v1/modify/items', data: item);
     }
+
+    Navigator.pop(context);
   }
 
   @override
