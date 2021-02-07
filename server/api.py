@@ -121,7 +121,8 @@ def items():
                 'daysLeft': (expiry_date - today).days,
                 'expiryDate': result['expiryDate'],
                 'name': result['name'],
-                'qty': result['qty']
+                'qty': result['qty'],
+                'itemId': result['itemId']
             })
     
     return jsonify(formatted_results)

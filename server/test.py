@@ -1,6 +1,6 @@
 import requests, json
 
-BASE = "http://127.0.0.1:5000/"
+BASE = "http://127.0.0.1:3000/"
 
 
 data = [
@@ -10,8 +10,8 @@ data = [
     {"name": "Orange", "expiryDate": "2021-02-10", "qty": 2, "weight": 3, "price": 2},
 ]
 
-response = requests.get(BASE + "api/v1/items?firdgeId=jCWuzPNfKdw1MKztfzSI&page=0")
-print(response)
+response = requests.get(BASE + "api/v1/items?page=0")
+print(response.json())
 
 # for i in range(len(data)):
 #     response = requests.put(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data[i])
