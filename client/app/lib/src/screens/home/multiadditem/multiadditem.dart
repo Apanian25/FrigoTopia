@@ -4,14 +4,34 @@ import 'package:app/src/screens/fridge/food_item_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MultiAddItem extends StatefulWidget {
+  int qty;
+  String name;
+  String expiryDate;
+
+  MultiAddItem(int qty, String name, String expiryDate) {
+    this.qty = qty;
+    this.name = name;
+    this.expiryDate = expiryDate;
+  }
+
   @override
-  _MultiAddItem createState() => new _MultiAddItem();
+  _MultiAddItem createState() =>
+      new _MultiAddItem(this.qty, this.name, this.expiryDate);
 }
 
 class _MultiAddItem extends State<MultiAddItem> {
-  int _qty = 1;
-  String _name = 'Banana';
-  String _expiryDate = '2021-02-11';
+  // int _qty = 1;
+  // String _name = 'Banana';
+  // String _expiryDate = '2021-02-11';
+  int _qty;
+  String _name;
+  String _expiryDate;
+
+  _MultiAddItem(int qty, String name, String expiryDate) {
+    _qty = qty;
+    _name = name;
+    _expiryDate = expiryDate;
+  }
 
   @override
   Widget build(BuildContext context) {
