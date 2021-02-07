@@ -221,7 +221,7 @@ headers = {
 @app.route('/api/v1/recipe', methods=['GET'])
 def recipes_for_item():
     # Check if the userId was provided
-    if 'item' not in request.args and 'page' not in request.args:
+    if 'item' not in request.args:
         return "Error"
     
     response = requests.request("GET", url, headers=headers, params={"q": request.args['item']})

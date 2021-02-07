@@ -1,38 +1,41 @@
 import 'package:app/src/screens/recipes/scroller.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class Recipe extends StatefulWidget {
-  List<dynamic> items;
+  String itemName;
 
-  Recipe(items) {
-    // this.items = jsonDecode(items);
-    this.items = [
-      {
-        'url':
-            "https://www.sargento.com/recipes/dinner/chicken-tortilla-wraps/",
-        'title': "Chicken Tortilla",
-        'img':
-            "https://d1bjorv296jxfn.cloudfront.net/s3fs-public/recipe-images/sargento/chix-wrap.jpg",
-        'src': "Sagento",
-      },
-      {
-        'url': "https://cafedelites.com/chicken-tikka-masala/",
-        'title': "Chicken Masalla",
-        'img':
-            "https://cafedelites.com/wp-content/uploads/2018/04/Best-Chicken-Tikka-Masala-IMAGE-2.jpg",
-        'src': "Cafe Delites",
-      }
-    ];
+  Recipe(itemName) {
+    this.itemName = itemName;
   }
 
   @override
-  _Recipe createState() => new _Recipe(this.items);
+  _Recipe createState() => new _Recipe(this.itemName);
 }
 
 class _Recipe extends State<Recipe> {
   List<dynamic> _items;
-  _Recipe(items) {
-    _items = items;
+  String _itemName;
+
+  _Recipe(itemName) {
+    _itemName = itemName;
+    _items = [];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    String endpoint = "http://23.233.161.96/api/v1/recipe?item=" + _itemName;
+    Dio dio = new Dio();
+    dio.get(endpoint).then((response) {
+      if (response.statusCode == 200) {
+        setState(() {
+          _items = response.data;
+        });
+      } else {
+        print("BAD");
+      }
+    });
   }
 
   @override
