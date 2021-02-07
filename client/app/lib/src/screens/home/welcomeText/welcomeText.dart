@@ -1,5 +1,4 @@
 // home screen contents
-import 'package:app/src/screens/home/multiadditem/multiadditem.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
