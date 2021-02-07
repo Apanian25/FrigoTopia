@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:app/src/screens/fridge/food_item_image.dart';
 import 'package:app/src/screens/fridge/item_form.dart';
 import 'package:app/src/utils/debouncer.dart';
