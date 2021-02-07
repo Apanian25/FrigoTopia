@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:app/src/screens/fridge/add_item.dart';
+import 'package:app/src/screens/fridge/item_form.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -38,7 +41,8 @@ class ItemData {
 
 class Item extends StatefulWidget {
   final ItemData itemData;
-  Item({Key key, this.itemData}) : super(key: key) {
+  final Function removeItem;
+  Item({Key key, this.itemData, @required this.removeItem}) : super(key: key) {
     print(this.itemData.imagePath);
   }
 
@@ -59,16 +63,29 @@ class _ItemState extends State<Item> {
 
   void showAddItemModal() {
     showCupertinoModalBottomSheet(
-      context: context,
-      enableDrag: true,
-      // useRootNavigator: true,
-      expand: true,
-      builder: (context) => AddItemModal(),
-      // builder: (context) => SingleChildScrollView(
-      //   controller: ModalScrollController.of(context),
-      //   child: Container(),
-      // ),
-    );
+        context: context,
+        enableDrag: true,
+        // useRootNavigator: true,
+        expand: true,
+        builder: (context) => ItemForm(
+              itemCard: new ItemCard(
+                imagePath: widget.itemData.imagePath,
+                showName: false,
+                itemName: widget.itemData.name,
+                color: Colors
+                    .primaries[Random().nextInt(Colors.primaries.length)]
+                    .withOpacity(0.7),
+                addItem: ({ItemData data = null}) {
+                  print('Updating item: ${data}');
+                },
+              ),
+              isUpdating: true,
+              removeItem: widget.removeItem, //Switch to Update item
+              // builder: (context) => SingleChildScrollView(
+              //   controller: ModalScrollController.of(context),
+              //   child: Container(),
+              // ),
+            ));
   }
 
   @override
