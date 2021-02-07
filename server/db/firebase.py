@@ -30,7 +30,6 @@ def get_fridge_contents(fridgeId, page):
 
 
 def get_expiring_items():
-    print("made it this far")
     # Offset is not good for scaling and pricing (counts as query)
     # Ok for hackathon, change after
     fridge_ref = (db.collection("fridge/jCWuzPNfKdw1MKztfzSI/items")

@@ -237,7 +237,6 @@ def recipes_for_item():
                 'title': recipe['label'],
                 'img': recipe['image'],
                 'src': recipe['source'],
-                
             })
     
     
