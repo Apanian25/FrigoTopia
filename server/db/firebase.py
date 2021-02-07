@@ -22,6 +22,7 @@ def get_fridge_contents(fridgeId, page):
     
     fridge_items = []
     for item in fridge_ref:
+        print(item.id)
         fridge_items.append(item.to_dict())  
 
 
