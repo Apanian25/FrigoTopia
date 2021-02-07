@@ -1,13 +1,16 @@
 // home screen contents
+import 'dart:math';
+
+import 'package:app/src/screens/fridge/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import 'food_item_image.dart';
 import 'add_item.dart';
 import 'shine_animation.dart';
 
@@ -22,6 +25,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
   bool lightShinning = false;
   ScrollController scrollController;
   bool dialVisible = true;
+  List<ItemData> items = [];
   bool get isPlaying =>
       _fridgeOpen?.isActive ?? _fridgeClose?.isActive ?? false;
   final riveFileName = 'assets/images/frigomain.riv';
@@ -169,21 +173,33 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
             Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Text.rich(
-                      TextSpan(
-                        text: 'Hello', // default text style
-                        style: TextStyle(fontSize: 20),
-                        children: <TextSpan>[
+                    padding: const EdgeInsets.all(10.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          var itemName = foodDict[foodDict.keys
+                              .elementAt((Random().nextInt(foodDict.length)))];
+                          print('Adding item: ${itemName}');
+                          setState(() {
+                            items.add(ItemData(name: itemName));
+                          });
+                          print(items);
+                        },
+                        child: Text.rich(
                           TextSpan(
-                              text: ' beautiful ',
-                              style: TextStyle(fontStyle: FontStyle.italic)),
-                          TextSpan(
-                              text: 'world',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ))),
+                            text: 'Hello', // default text style
+                            style: TextStyle(fontSize: 20),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: ' beautiful ',
+                                  style:
+                                      TextStyle(fontStyle: FontStyle.italic)),
+                              TextSpan(
+                                  text: 'world',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        )))),
             Transform.scale(
               alignment: Alignment.centerLeft,
               scale: 0.9,
@@ -193,7 +209,35 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                       ? const SizedBox()
                       : GestureDetector(
                           onDoubleTap: toggleOpen,
-                          child: Rive(artboard: _artboard),
+                          child: Stack(children: <Widget>[
+                            Rive(artboard: _artboard),
+
+                            AnimatedOpacity(
+                                opacity: isOpen ? 1.0 : 0.0,
+                                duration: Duration(milliseconds: 600),
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 50, top: 90),
+                                    child: Wrap(
+                                      direction: Axis
+                                          .horizontal, // make sure to set this
+                                      alignment: WrapAlignment.spaceBetween,
+                                      spacing: -30, // set your spacing
+                                      children: <Widget>[
+                                        for (var i in items)
+                                          Item(
+                                            itemData: i,
+                                          )
+                                      ],
+                                    )))
+                            // Row(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       for (var i in items)
+                            //         Item(
+                            //           itemData: i,
+                            //         )
+                            //     ])
+                          ]),
                         )),
             )
           ]),

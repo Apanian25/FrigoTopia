@@ -1,0 +1,5 @@
+import glob
+result = glob.glob("/home/nguyenquannnn/Projects/FrigoTopia/client/app/assets/images/food/*.png")
+
+print({i.split('/')[-1].split('-')[1]: i[i.index('assets/'):] for i in result})
+# os.dir(pathlib.Path("/home/nguyenquannnn/Projects/FrigoTopia/client/app/assets/images/food").resolve()

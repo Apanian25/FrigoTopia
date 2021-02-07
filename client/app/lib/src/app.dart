@@ -11,7 +11,6 @@ class App extends StatelessWidget {
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   Widget build(BuildContext context) {
-    final Firestore _db = Firestore.instance;
     final pushNotificationService = PushNotificationService(_firebaseMessaging);
     pushNotificationService.initialise();
     // FirebaseApp.instance.(context)
