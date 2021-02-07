@@ -78,8 +78,6 @@ class _MyCameraState extends State<CameraState> {
         print("GOOD");
         List<dynamic> items = response.data;
         String data = jsonEncode(items);
-        //print(items[0]['name']);
-        //print(jsonDecode(response.data)[0]['name']);
         Navigator.pushNamed(context, '/multiadd', arguments: data);
       } else {
         print("BAD");
