@@ -5,22 +5,36 @@ import 'package:dio/dio.dart';
 import 'dart:convert';
 
 class Camera extends StatelessWidget {
+  String from;
+  Camera(String from) {
+    this.from = from;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CameraState(),
+      home: CameraState(this.from),
     );
   }
 }
 
 class CameraState extends StatefulWidget {
+  String from;
+  CameraState(String from) {
+    this.from = from;
+  }
+
   @override
-  _MyCameraState createState() => _MyCameraState();
+  _MyCameraState createState() => _MyCameraState(from);
 }
 
 class _MyCameraState extends State<CameraState> {
   File _image;
   final picker = ImagePicker();
+  String from;
+  _MyCameraState(String from) {
+    this.from = from;
+  }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -58,6 +72,7 @@ class _MyCameraState extends State<CameraState> {
 
   @override
   Widget build(BuildContext context) {
+    print(this.from);
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Picker Example'),

@@ -1,6 +1,5 @@
 // home screen contents
 import 'dart:math';
-
 import 'package:app/src/screens/fridge/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -133,7 +132,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         SpeedDialChild(
           child: Icon(Icons.receipt, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
-          onTap: () => Navigator.pushNamed(context, '/camera'),
+          onTap: () =>
+              Navigator.pushNamed(context, '/camera', arguments: "receipt"),
           label: 'Take receipt picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],
@@ -149,7 +149,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         SpeedDialChild(
           child: Icon(Icons.camera, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
-          onTap: () => print('FIRST CHILD'),
+          onTap: () =>
+              Navigator.pushNamed(context, '/camera', arguments: "fridge"),
           label: 'Take fridge picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],

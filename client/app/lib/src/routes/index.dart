@@ -14,7 +14,7 @@ Route routes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => Fridge());
 
     case '/camera':
-      return MaterialPageRoute(builder: (_) => Camera());
+      return MaterialPageRoute(builder: (_) => Camera(settings.arguments));
     // case '/auth':
     //   return MaterialPageRoute(builder: (_) => AuthenticationScreen());
     default:
