@@ -103,6 +103,14 @@ class MultiAddItem extends StatelessWidget {
                       )
                     ],
                   ),
+                  Text(_tip == 'null' ? '' : _tip,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: .5),
+                      )),
                 ],
               )),
         ),
