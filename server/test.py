@@ -17,8 +17,8 @@ data = [
 #     response = requests.put(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data[i])
 #     print(response.json())
 
-# response = requests.put(BASE + "api/v1/modify/items/jCWuzPNfKdw1MKztfzSI", data[0])
-# print(response.json())
+response = requests.put(BASE + "api/v1/modify/items", data[0])
+print(response.json())
 
-response = requests.delete(BASE + "api/v1/modify/items", data={'itemId': '6ziGPSjc3m4P7OG06V9Z'})
-print(response)
+# response = requests.delete(BASE + "api/v1/modify/items", data={'itemId': '6ziGPSjc3m4P7OG06V9Z'})
+# print(response)

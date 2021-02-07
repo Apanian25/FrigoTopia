@@ -48,10 +48,12 @@ def addFridge(user):
     print('Not impplemented yet...')
 
 def addItem(fridge_id, item):
+    print(fridge_id)
+    print(db.collection('fridge').document(fridge_id).get().to_dict())
+    
     fridge = db.collection('fridge').document(fridge_id)
     if not fridge.get().to_dict():
         return
-
     # generate the id
     doc_ref = fridge.collection('items').document()
     # populate the document

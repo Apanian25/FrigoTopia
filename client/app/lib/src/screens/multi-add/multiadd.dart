@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:app/src/screens/fridge/food_item_image.dart';
+import 'package:app/src/screens/fridge/item.dart';
 import 'package:app/src/screens/multi-add/infiniteScroll.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MultiAdd extends StatefulWidget {
   List<dynamic> items;
+  Function addItemMain;
 
-  MultiAdd(items) {
-    this.items = jsonDecode(items);
+  MultiAdd(Map map) {
+    print(map['data']);
+    this.items = jsonDecode(map['data']);
+    this.addItemMain = map['addItem'];
   }
 
   @override
@@ -45,7 +50,21 @@ class _MultiAdd extends State<MultiAdd> {
     Dio dio = new Dio();
 
     for (var item in _items) {
-      dio.put('http://23.233.161.96/api/v1/modify/items', data: item);
+      // dio
+      //     .put('http://23.233.161.96/api/v1/modify/items', data: item)
+      //     .then((res) {
+      String name = item['name'].toLowerCase();
+      print("Days left: ${item['daysLeft']}");
+      widget.addItemMain(
+          data: ItemData(
+        daysLeft: item['daysLeft'],
+        expiryDate: item['expiryDate'],
+        imagePath: foodDict[name],
+        itemId: item['itemId'],
+        quantity: int.parse(item['qty']),
+        name: name,
+      ));
+      // });
     }
 
     Navigator.pop(context);
@@ -56,7 +75,7 @@ class _MultiAdd extends State<MultiAdd> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Validate Options'),
+          title: Text('Validate Items'),
         ),
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
