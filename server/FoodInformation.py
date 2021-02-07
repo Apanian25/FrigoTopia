@@ -10,15 +10,15 @@ import datetime
 food_information = {
     'banana': {
         'ripe': {
-            'tip': "Place in the fridge to give a longer lifespan!",
+            'tip': "RIPE: Place in the fridge to give a longer lifespan!",
             'lifetime': 7
         },
         'green': {
-            'tip': "Don't put in the fridge or else it will not ripe!",
+            'tip': "GREEN: Don't put in the fridge or else it will not ripe!",
             'lifetime': 10
         },
         'overripe': {
-            'tip': "Consider freezing it if you can't use it in the next few days!",
+            'tip': "OVERRIPE: Consider freezing it if you can't use it in the next few days!",
             'lifetime': 2
         },
     },
