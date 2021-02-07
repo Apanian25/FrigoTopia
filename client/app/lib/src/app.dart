@@ -14,7 +14,6 @@ class App extends StatelessWidget {
     final pushNotificationService = PushNotificationService(_firebaseMessaging);
     pushNotificationService.initialise();
     // FirebaseApp.instance.(context)
-    print("Hello This is my personal message that I'm writing");
     return Consumer<AppStateNotifier>(builder: (context, appState, child) {
       return MaterialApp(
         title: 'News!',
