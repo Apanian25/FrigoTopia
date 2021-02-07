@@ -79,6 +79,7 @@ Return:
 """
 class Receipt(Resource):
     def post(self):
+        print('Inside Receipt')
         receipt = request.files['image']
         if receipt:
             print('image received')
