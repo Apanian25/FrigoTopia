@@ -44,8 +44,13 @@ class ItemData {
 class Item extends StatefulWidget {
   final ItemData itemData;
   final Function removeItem;
+  final int maxHealthBarWidth = 50;
   Item({Key key, this.itemData, @required this.removeItem}) : super(key: key) {
     print(this.itemData.imagePath);
+  }
+
+  double getHealthBarWidthOnDay(int daysLeft) {
+    return daysLeft * 50 / 14 > 50 ? 50.0 : (daysLeft * 50 / 14.0);
   }
 
   @override
@@ -100,14 +105,20 @@ class _ItemState extends State<Item> {
     return GestureDetector(
         onTap: showAddItemModal,
         child: Column(children: [
-          LinearProgressIndicator(
-            value: 1.0,
-            backgroundColor: widget.itemData.daysLeft <= 3
-                ? Colors.red[600]
-                : widget.itemData.daysLeft > 3 && widget.itemData.daysLeft <= 8
-                    ? Colors.yellow[600]
-                    : Colors.green[600],
-          ),
+          Container(
+              constraints: BoxConstraints(
+                  maxWidth:
+                      widget.getHealthBarWidthOnDay(widget.itemData.daysLeft)),
+              // margin: new EdgeInsets.fromLTRB(150.0, 0.0, 50.0, 0.0),
+              child: LinearProgressIndicator(
+                value: 1.0,
+                valueColor: widget.itemData.daysLeft <= 3
+                    ? AlwaysStoppedAnimation<Color>(Colors.red[600])
+                    : widget.itemData.daysLeft > 3 &&
+                            widget.itemData.daysLeft <= 8
+                        ? AlwaysStoppedAnimation<Color>(Colors.yellow[600])
+                        : AlwaysStoppedAnimation<Color>(Colors.green[600]),
+              )),
           Image(
               image: AssetImage(widget.itemData.imagePath ??
                   'assets/images/food/icons8-celery-100.png'))

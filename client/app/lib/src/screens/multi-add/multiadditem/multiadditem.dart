@@ -1,6 +1,7 @@
 // home screen contents
 import 'package:flutter/material.dart';
 import 'package:app/src/screens/fridge/food_item_image.dart';
+import 'package:app/src/utils/string_util.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MultiAddItem extends StatelessWidget {
@@ -51,7 +52,7 @@ class MultiAddItem extends StatelessWidget {
                   Container(
                       margin: EdgeInsets.only(bottom: 3.0),
                       child: Text(
-                        _name,
+                        _name.capitalizeFirstofEach,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                               color: Colors.black54,

@@ -60,6 +60,7 @@ class RecipeRow extends StatelessWidget {
                               child: Text(
                                 _title,
                                 textDirection: TextDirection.ltr,
+                                maxLines: 2,
                                 style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       color: Colors.black54,

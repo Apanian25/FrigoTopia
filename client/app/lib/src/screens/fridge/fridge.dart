@@ -110,6 +110,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                 itemId: temp['itemId']));
           }
           print("Item ID: ${items[0]?.itemId}");
+          items.sort((d1, d2) => d1.daysLeft - d2.daysLeft);
         });
       } else {
         print("BAD");
@@ -156,8 +157,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         SpeedDialChild(
           child: Icon(Icons.receipt, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
-          onTap: () =>
-              Navigator.pushNamed(context, '/camera', arguments: "receipt"),
+          onTap: () => Navigator.pushNamed(context, '/camera',
+              arguments: {"action": "receipt", "addItem": addItem}),
           label: 'Take receipt picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],
@@ -174,7 +175,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
           child: Icon(Icons.camera, color: Colors.white),
           backgroundColor: Color(0xff00BFA6),
           onTap: () => Navigator.pushNamed(context, '/camera',
-              arguments: "image_upload"),
+              arguments: {"action": "image_upload", "addItem": addItem}),
           label: 'Take fridge picture',
           labelStyle: TextStyle(fontWeight: FontWeight.w500),
           labelBackgroundColor: Colors.green[50],
@@ -199,7 +200,7 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
         'expiryDate': data.expiryDate,
       }).then((res) {
         print(res);
-        print('Adding item: ${data.name}');
+        print('Adding item: ${data.name}, ${data.daysLeft}');
         // if (res.statusCode == 200) {
         items.add(data);
         setState(() {
@@ -274,14 +275,14 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                                 opacity: isOpen ? 1.0 : 0.0,
                                 duration: Duration(milliseconds: 600),
                                 child: Container(
-                                    padding: EdgeInsets.only(left: 50, top: 90),
+                                    padding: EdgeInsets.only(left: 50, top: 80),
                                     child: Wrap(
                                       crossAxisAlignment:
                                           WrapCrossAlignment.start,
                                       direction: Axis
                                           .horizontal, // make sure to set this
                                       alignment: WrapAlignment.spaceBetween,
-                                      spacing: -30, // set your spacing
+                                      spacing: -30,
                                       children: <Widget>[
                                         for (var i in items)
                                           Item(

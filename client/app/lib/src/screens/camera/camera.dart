@@ -6,36 +6,33 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
 class Camera extends StatelessWidget {
-  String from;
-  Camera(String from) {
-    this.from = from;
+  Map args;
+  Camera(Map args) {
+    this.args = args;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CameraState(this.from),
+      child: CameraState(this.args),
     );
   }
 }
 
 class CameraState extends StatefulWidget {
-  String from;
-  CameraState(String from) {
-    this.from = from;
+  Map args;
+
+  CameraState(Map args) {
+    this.args = args;
   }
 
   @override
-  _MyCameraState createState() => _MyCameraState(from);
+  _MyCameraState createState() => _MyCameraState();
 }
 
 class _MyCameraState extends State<CameraState> {
   File _image;
   final picker = ImagePicker();
-  String from;
-  _MyCameraState(String from) {
-    this.from = from;
-  }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -70,7 +67,8 @@ class _MyCameraState extends State<CameraState> {
       'image': await MultipartFile.fromFile(_image.path, filename: fileName)
     });
 
-    String endpoint = "http://23.233.161.96/api/v1/" + this.from;
+    String endpoint =
+        "http://23.233.161.96/api/v1/" + this.widget.args['action'];
 
     Dio dio = new Dio();
     dio.post(endpoint, data: data).then((response) {
@@ -78,7 +76,8 @@ class _MyCameraState extends State<CameraState> {
         print("GOOD");
         List<dynamic> items = response.data;
         String data = jsonEncode(items);
-        Navigator.pushNamed(context, '/multiadd', arguments: data);
+        Navigator.pushNamed(context, '/multiadd',
+            arguments: {'data': data, 'addItem': widget.args['addItem']});
       } else {
         print("BAD");
       }
@@ -119,7 +118,7 @@ class _MyCameraState extends State<CameraState> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Picker Example'),
+        title: Text('Image Picker'),
       ),
       body: Center(
         child: _image == null ? Text('No image selected.') : Image.file(_image),
