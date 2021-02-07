@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorConstants.secondaryAppColor,
+        backgroundColor: Colors.teal,
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
           cubit: authenticationBloc,
           listener: (BuildContext context, AuthenticationState state) {
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
               cubit: authenticationBloc,
               builder: (BuildContext context, AuthenticationState state) {
-                return Center(child: Image.asset(AllImages().logo));
+                return Center(child: Image.asset("assets/images/welcome.png"));
               }),
         ));
   }

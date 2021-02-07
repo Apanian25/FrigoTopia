@@ -32,7 +32,7 @@ class MultiAddItem extends StatelessWidget {
         Expanded(
           flex: 3,
           child: Container(
-            child: Image.asset(foodDict[foodType]),
+            child: Image.asset(foodDict[foodType] ?? foodDict['coconut']),
             decoration: BoxDecoration(
                 color: Color.fromRGBO(225, 240, 225, 1),
                 // border: Border.all(

@@ -103,10 +103,13 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
             String name = temp['name'].toLowerCase();
             items.add(new ItemData(
                 name: name,
+                expiryDate: temp['expiryDate'],
                 imagePath: foodDict[name],
                 quantity: int.parse(temp['qty']),
-                daysLeft: temp['daysLeft']));
+                daysLeft: temp['daysLeft'],
+                itemId: temp['itemId']));
           }
+          print("Item ID: ${items[0]?.itemId}");
         });
       } else {
         print("BAD");
@@ -187,19 +190,40 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
       var item = ItemData(imagePath: itemName);
       print('Adding item: ${itemName}');
       items.add(item);
+      setState(() {});
     } else {
-      items.add(data);
-      print('Adding item: ${data}');
+      Dio dio = new Dio();
+      dio.put('http://23.233.161.96/api/v1/modify/items', data: {
+        'name': data.name,
+        'qty': data.quantity,
+        'expiryDate': data.expiryDate,
+      }).then((res) {
+        print(res);
+        print('Adding item: ${data.name}');
+        // if (res.statusCode == 200) {
+        items.add(data);
+        setState(() {
+          items.sort((d1, d2) => d1.daysLeft - d2.daysLeft);
+        });
+        // }
+      });
     }
-    setState(() {});
   }
 
   void removeItem({ItemData data = null}) {
-    items = items.where((i) {
-      print(i);
-      return i.name != data.name;
-    }).toList();
-    setState(() {});
+    print('Removing: ${data.name} ${data.itemId}');
+    Dio dio = new Dio();
+    try {
+      dio.delete('http://23.233.161.96/api/v1/modify/items',
+          data: {'itemId': data.itemId}).then((res) {
+        items = items.where((i) {
+          return i.name != data.name;
+        }).toList();
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -217,25 +241,23 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
             Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(50.0),
                     child: GestureDetector(
-                        onTap: addItem,
+                        // onTap: addItem,
                         child: Text.rich(
+                      TextSpan(
+                        text: 'Hello', // default text style
+                        style: TextStyle(fontSize: 20),
+                        children: <TextSpan>[
                           TextSpan(
-                            text: 'Hello', // default text style
-                            style: TextStyle(fontSize: 20),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: ' beautiful ',
-                                  style:
-                                      TextStyle(fontStyle: FontStyle.italic)),
-                              TextSpan(
-                                  text: 'world',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        )))),
+                              text: ' beautiful ',
+                              style: TextStyle(fontStyle: FontStyle.italic)),
+                          TextSpan(
+                              text: 'world',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    )))),
             Transform.scale(
               alignment: Alignment.centerLeft,
               scale: 0.9,
@@ -254,6 +276,8 @@ class _FridgeState extends State<Fridge> with SingleTickerProviderStateMixin {
                                 child: Container(
                                     padding: EdgeInsets.only(left: 50, top: 90),
                                     child: Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.start,
                                       direction: Axis
                                           .horizontal, // make sure to set this
                                       alignment: WrapAlignment.spaceBetween,

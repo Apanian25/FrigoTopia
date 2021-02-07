@@ -6,6 +6,7 @@ from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
 from RipenessDetection import RipenessDetection
+import random
 import requests
 import numpy as np
 import cv2 as cv
@@ -79,7 +80,7 @@ class Receipt(Resource):
             items = getItems(receipt)
             json = []
             for item, count in items.items():
-                json.append({'name': item, 'qty': count})
+                json.append({'name': item, 'qty': str(count), 'expiryDate': f"2021-{random.randint(0,31)}-{random.randint(3,5)}", 'tip': None})
             return json
         else:
             print('image not received')
