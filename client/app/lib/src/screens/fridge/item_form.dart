@@ -89,6 +89,18 @@ class _ItemFormState extends State<ItemForm> {
       textColor: Color(0xff396339),
       child: Text("Update Item", style: TextStyle(fontSize: 14)),
     );
+    var recipeButton = RaisedButton(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          side: BorderSide(color: Color(0000000))),
+      onPressed: () {
+        Navigator.pushNamed(context, '/recipe',
+            arguments: widget.itemCard.itemName);
+      },
+      color: Colors.blue[300],
+      textColor: Color(0xff396339),
+      child: Text("See Recipes", style: TextStyle(fontSize: 14)),
+    );
     return Scaffold(
         body: Column(
       children: [
@@ -281,6 +293,21 @@ class _ItemFormState extends State<ItemForm> {
                     ))
               ],
             ))),
+        Expanded(
+            flex: 1,
+            child: Container(
+                constraints: BoxConstraints.expand(),
+                padding: const EdgeInsets.only(
+                    right: 10.0, left: 10.0, top: 10.0, bottom: 10.0),
+                child: widget.isUpdating
+                    ? Row(
+                        children: [
+                          Spacer(flex: 27),
+                          Expanded(child: recipeButton, flex: 45),
+                          Spacer(flex: 27),
+                        ],
+                      )
+                    : Spacer(flex: 1))),
         Expanded(
             flex: 1,
             child: Container(
