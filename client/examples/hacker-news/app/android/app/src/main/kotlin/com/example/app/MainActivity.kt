@@ -1,4 +1,4 @@
-package com.example.app
+package com.frigotopia
 
 import io.flutter.embedding.android.FlutterActivity
 

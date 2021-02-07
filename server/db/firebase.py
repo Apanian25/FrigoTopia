@@ -28,6 +28,20 @@ def get_fridge_contents(fridgeId, page):
     return fridge_items
 
 
+
+def get_expiring_items():
+    # Offset is not good for scaling and pricing (counts as query)
+    # Ok for hackathon, change after
+    fridge_ref = (db.collection("fridge/jCWuzPNfKdw1MKztfzSI/items")
+                    .get())
+    
+    fridge_items = []
+    for item in fridge_ref:
+        fridge_items.append(item.to_dict())  
+
+    return fridge_items
+
+
 def addFridge(user):
     print('Not impplemented yet...')
 

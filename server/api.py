@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from db.firebase import get_fridge_contents, addItem, removeItem
+from db.firebase import get_fridge_contents, addItem, removeItem, get_expiring_items
 from YoloDetection import YoloDetection
 from FoodInformation import get_food_infomation
 from datetime import date, datetime
 from imageDetection.receipts.receiptScan import getItems
 from RipenessDetection import RipenessDetection
+import requests
 import numpy as np
-
+import cv2 as cv
 
 app = Flask(__name__)
 api = Api(app)
@@ -105,6 +106,7 @@ a paginated form.
 Return: [{name: String, qty: Int, daysLeft: Int}]
 ******************************************************************************
 """
+#jCWuzPNfKdw1MKztfzSI
 @app.route('/api/v1/items', methods=['GET'])
 def items():
     # Check if the userId was provided
@@ -148,13 +150,8 @@ food_items = ['banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot',
 image_detector = YoloDetection()
 ripeness_detector = RipenessDetection()
 
-
-# Temp import
-import cv2 as cv
-
 @app.route('/api/v1/image_upload', methods=['POST'])
 def items_from_image():
-
     try:
         imagefile = request.files['image']
     except Exception as err:
@@ -201,6 +198,88 @@ def items_from_image():
             
     
     return jsonify(list(parsed_food.values()))
+
+
+
+"""
+******************************************************************************
+Endpoint: /api/v1/recipe
+
+Description: Endpoint that will retrieve recipes for a given food item
+
+Return: [{img: String, title: String, src: String, url: String}]
+******************************************************************************
+"""
+url = "https://edamam-recipe-search.p.rapidapi.com/search"
+
+headers = {
+    'x-rapidapi-key': "12a97c0bbbmshaf65c2b7355968bp1b19e7jsn55344496d90e",
+    'x-rapidapi-host': "edamam-recipe-search.p.rapidapi.com"
+    }
+
+
+@app.route('/api/v1/recipe', methods=['GET'])
+def recipes_for_item():
+    # Check if the userId was provided
+    if 'item' not in request.args and 'page' not in request.args:
+        return "Error"
+    
+    response = requests.request("GET", url, headers=headers, params={"q": request.args['item']})
+    recipes = response.json()['hits']
+    
+    formatted_recipes = []
+    
+    for recipe in recipes:
+        recipe = recipe['recipe']
+        
+        formatted_recipes.append({
+                'url': recipe['url'],
+                'title': recipe['label'],
+                'img': recipe['image'],
+                'src': recipe['source'],
+                
+            })
+    
+    
+    return jsonify(formatted_recipes)
+    
+
+
+
+"""
+******************************************************************************
+Endpoint: /api/v1/notifications
+
+Description: Endpoint that will trigger sending the notification to the user
+
+Return: Success!
+******************************************************************************
+"""
+PHRASE = "Be Aware! You have {} food item{} expiring soon!!! Click here to see some ways to use them!"
+
+@app.route('/api/v1/notifications', methods=['GET'])
+def send_notifications():
+    results = get_expiring_items()
+    
+    qty = 0
+
+    for result in results:
+        expiry_date = datetime.strptime(result['expiryDate'], '%Y-%m-%d').date()
+        today = date.today()
+        daysLeft = (expiry_date - today).days
+
+        if (daysLeft <= 3):
+            qty += 1
+            
+    if (qty < 1):
+        return "Do Nothing!"
+    
+    return PHRASE.format(qty, ('s', '')[qty == 1])
+
+    
+    
+
+
 
 api.add_resource(Item, "/api/v1/modify/items/<string:fridge_id>")
 api.add_resource(Receipt, "/api/v1/receipt")
